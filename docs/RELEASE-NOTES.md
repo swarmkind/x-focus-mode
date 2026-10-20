@@ -1,3 +1,9 @@
+# v0.1.6 — quiet divider
+
+- Apply selected design C: a graphite outline thumb, short vertical divider and extra space after Share.
+- Remove the enclosing ring and background from every state. Flagged posts retain an amber icon and community count.
+- Preserve the 20 px icon, keyboard focus indicator and existing post height.
+
 # v0.1.5 — centred button ring
 
 - Remove the partial lower ring on relevant posts so every outline thumb has the same centred circular treatment.

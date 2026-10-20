@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-20T12:42:18.873Z",
+  "date": "2026-10-20T12:54:14.868Z",
   "browser": "151.0.7922.34",
   "results": [
     {
@@ -10,17 +10,17 @@
     {
       "name": "real content script blurs, highlights, excludes own/protected posts",
       "passed": true,
-      "ms": 806
+      "ms": 805
     },
     {
       "name": "keyboard Reveal preserves focus and exposes labelled controls",
       "passed": true,
-      "ms": 33
+      "ms": 35
     },
     {
       "name": "compact controls and open menus add zero post height",
       "passed": true,
-      "ms": 43
+      "ms": 38
     },
     {
       "name": "Reveal latency",
@@ -34,32 +34,32 @@
     {
       "name": "same DOM card recycling preserves reveal and refreshes a changed tweet ID",
       "passed": true,
-      "ms": 38
+      "ms": 60
     },
     {
       "name": "30 repeated feed-card replacements keep one overlay per card",
       "passed": true,
-      "ms": 469
+      "ms": 536
     },
     {
       "name": "explicit feedback creates signed minimal human report",
       "passed": true,
-      "ms": 83
+      "ms": 108
     },
     {
       "name": "redraw preserves Reveal and community badge persists on detail",
       "passed": true,
-      "ms": 83
+      "ms": 79
     },
     {
       "name": "second installation receives warning with no model calls",
       "passed": true,
-      "ms": 878
+      "ms": 1114
     },
     {
       "name": "offscreen peers establish native WebRTC and transfer reports",
       "passed": true,
-      "ms": 19
+      "ms": 18
     },
     {
       "name": "persistent peer byte budget refuses over-limit transfer",
@@ -79,52 +79,52 @@
     {
       "name": "settings fit a 360px window and expose maker/support links",
       "passed": true,
-      "ms": 70
+      "ms": 63
     },
     {
       "name": "Reveal restores existing native styles and inert state",
       "passed": true,
-      "ms": 124
+      "ms": 132
     },
     {
       "name": "Feedback stays in the feed and corrections update immediately across redraws",
       "passed": true,
-      "ms": 51
+      "ms": 84
     },
     {
       "name": "reject an unflagged post, persist on refresh, undo locally",
       "passed": true,
-      "ms": 412
+      "ms": 437
     },
     {
       "name": "rejection works after Chrome stops and restarts the background worker",
       "passed": true,
-      "ms": 82
+      "ms": 84
     },
     {
       "name": "narrow-screen menu stays inside viewport and dismisses on scroll/outside click",
       "passed": true,
-      "ms": 213
+      "ms": 226
     },
     {
       "name": "slow model fails open after one second, late result does not hide read card",
       "passed": true,
-      "ms": 2157
+      "ms": 2180
     },
     {
       "name": "explicit rejection survives a late conflicting model result",
       "passed": true,
-      "ms": 2036
+      "ms": 2071
     },
     {
       "name": "API mode sends keys only to its selected provider and excludes unknown visibility",
       "passed": true,
-      "ms": 204
+      "ms": 201
     },
     {
       "name": "excluded routes stay untouched and SPA navigation activates the home adapter",
       "passed": true,
-      "ms": 124
+      "ms": 120
     },
     {
       "name": "Observed fixture main-thread tasks over 50 ms",

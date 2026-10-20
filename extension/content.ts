@@ -50,12 +50,12 @@ type Card = {
 const css = `
 :host{font:14px/1.4 system-ui;color:#182523;color-scheme:light dark}
 *{box-sizing:border-box}button{font:inherit;cursor:pointer}button:focus-visible{outline:2px solid #3b8b70;outline-offset:2px}
-.control{display:contents}.trigger{position:absolute;left:-5px;top:-17px;width:34px;height:34px;display:grid;place-items:center;padding:0;border:0;border-radius:50%;background:#ad743b0d;color:#a46b34;box-shadow:inset 0 0 0 1px #ad743b21;font-size:20px;line-height:1;transition:background .12s}.trigger svg{width:20px;height:20px;display:block}
-.trigger:hover,.trigger[aria-expanded=true]{background:#ad743b20}.trigger.flagged{background:#e8bd572b}
+:host::before{content:"";position:absolute;left:0;top:-10px;width:1px;height:20px;background:var(--xfm-icon,#414a53);opacity:.35;pointer-events:none}.control{display:contents}.trigger{position:absolute;left:14px;top:-17px;width:34px;height:34px;display:grid;place-items:center;padding:0;border:0;border-radius:6px;background:transparent;color:var(--xfm-icon,#414a53);font-size:20px;line-height:1;transition:color .12s}.trigger svg{width:20px;height:20px;display:block}
+.trigger:hover,.trigger[aria-expanded=true]{opacity:.75}.trigger.flagged{color:#986622}
 .badge{position:absolute;right:-2px;top:-2px;min-width:12px;height:12px;padding:0 2px;border-radius:8px;background:#9b6a16;color:white;font:9px/12px system-ui}
 .menu{position:fixed;inset:auto;margin:0;padding:9px;width:266px;max-width:calc(100vw - 16px);border:1px solid #dce4df;border-radius:14px;background:#fff;color:#182523;box-shadow:0 8px 35px #0c211c24}
 .menu::backdrop{background:transparent}.heading{font-weight:650;padding:5px 9px 8px}.label{padding:0 9px 8px;font-size:12px;color:#52645b}.item{display:block;width:100%;border:0;background:transparent;color:inherit;text-align:left;border-radius:7px;padding:9px;line-height:1.3}.item:hover,.item:focus-visible{background:#eef4f0}.divider{height:1px;background:#e4ebe7;margin:6px 0}.note{display:block;margin:7px 9px 4px;font-size:11px;color:#52645b}.menu button:disabled{opacity:.5;cursor:wait}
-@media(prefers-color-scheme:dark){.trigger{color:#d2aa73;background:#d2aa730a;box-shadow:inset 0 0 0 1px #d2aa7321}.trigger:hover,.trigger[aria-expanded=true]{background:#d2aa7320}.menu{background:#182523;color:#e4eee8;border-color:#40534a}.item:hover,.item:focus-visible{background:#2c4036}.label,.note{color:#b1c5b8}.divider{background:#40534a}}
+@media(prefers-color-scheme:dark){.trigger.flagged{color:#d5af79}.menu{background:#182523;color:#e4eee8;border-color:#40534a}.item:hover,.item:focus-visible{background:#2c4036}.label,.note{color:#b1c5b8}.divider{background:#40534a}}
 `;
 const overlayCss = `:host{position:absolute!important;inset:0 0 42px!important;display:grid!important;place-items:center!important;pointer-events:none!important;z-index:2!important}button{pointer-events:auto;font:600 13px/1.3 system-ui;color:#e8f2eb;background:#182e27ed;border:1px solid #8eae9b;border-radius:20px;padding:9px 15px;cursor:pointer;box-shadow:0 3px 14px #10291e24}button:focus-visible{outline:2px solid #8ed4ad;outline-offset:3px}`;
 function message<T = any>(data: unknown): Promise<T> {
@@ -240,8 +240,9 @@ async function inspect(article: HTMLElement) {
       ?.match(/^\/([A-Za-z0-9_]{1,15})$/)?.[1] || "";
   const post = extract(article, metadata, viewer);
   const old = active.get(article);
-  const actions = article.querySelector<HTMLElement>('[data-testid="reply"]')?.closest<HTMLElement>('[role="group"]');
-  if (!post || !actions) {
+  const reply = article.querySelector<HTMLElement>('[data-testid="reply"]');
+  const actions = reply?.closest<HTMLElement>('[role="group"]');
+  if (!post || !actions || !reply) {
     if (old) remove(old);
     return;
   }
@@ -262,7 +263,8 @@ async function inspect(article: HTMLElement) {
   const host = document.createElement("div");
   host.dataset.xfm = "";
   const root = host.attachShadow({ mode: "open" });
-  host.style.cssText = "display:inline-flex!important;position:relative!important;flex:0 0 24px!important;width:24px!important;height:0!important;align-self:center!important;margin:0!important;padding:0!important";
+  host.style.cssText = "display:inline-flex!important;position:relative!important;flex:0 0 48px!important;width:48px!important;height:0!important;align-self:center!important;margin:0!important;margin-left:10px!important;padding:0!important";
+  host.style.setProperty("--xfm-icon", getComputedStyle(reply.querySelector("svg") || reply).color);
   actions.append(host);
   const overlay = document.createElement("div");
   overlay.dataset.xfmOverlay = "";
