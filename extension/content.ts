@@ -51,7 +51,7 @@ const css = `
 :host{font:14px/1.4 system-ui;color:#182523;color-scheme:light dark}
 *{box-sizing:border-box}button{font:inherit;cursor:pointer}button:focus-visible{outline:2px solid #3b8b70;outline-offset:2px}
 .control{display:contents}.trigger{position:absolute;left:-5px;top:-17px;width:34px;height:34px;display:grid;place-items:center;padding:0;border:0;border-radius:50%;background:#ad743b0d;color:#a46b34;box-shadow:inset 0 0 0 1px #ad743b21;font-size:20px;line-height:1;transition:background .12s}.trigger svg{width:20px;height:20px;display:block}
-.trigger:hover,.trigger[aria-expanded=true]{background:#ad743b20}.trigger.flagged{background:#e8bd572b}.trigger.relevant{box-shadow:inset 0 -2px #7daa91}
+.trigger:hover,.trigger[aria-expanded=true]{background:#ad743b20}.trigger.flagged{background:#e8bd572b}
 .badge{position:absolute;right:-2px;top:-2px;min-width:12px;height:12px;padding:0 2px;border-radius:8px;background:#9b6a16;color:white;font:9px/12px system-ui}
 .menu{position:fixed;inset:auto;margin:0;padding:9px;width:266px;max-width:calc(100vw - 16px);border:1px solid #dce4df;border-radius:14px;background:#fff;color:#182523;box-shadow:0 8px 35px #0c211c24}
 .menu::backdrop{background:transparent}.heading{font-weight:650;padding:5px 9px 8px}.label{padding:0 9px 8px;font-size:12px;color:#52645b}.item{display:block;width:100%;border:0;background:transparent;color:inherit;text-align:left;border-radius:7px;padding:9px;line-height:1.3}.item:hover,.item:focus-visible{background:#eef4f0}.divider{height:1px;background:#e4ebe7;margin:6px 0}.note{display:block;margin:7px 9px 4px;font-size:11px;color:#52645b}.menu button:disabled{opacity:.5;cursor:wait}
@@ -162,7 +162,7 @@ function render(card: Card, pending = false) {
   path.setAttribute("d", "M16 3H6.5a2 2 0 0 0-1.96 1.61l-1.4 7A2 2 0 0 0 5.1 14H10l-1 5a2.5 2.5 0 0 0 2.5 2.5L16 14V3Zm0 0h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-3");
   icon.append(path);
   trigger.append(icon);
-  trigger.className = "trigger" + (enabled.length ? " flagged" : r?.assessment?.relevant ? " relevant" : "");
+  trigger.className = "trigger" + (enabled.length ? " flagged" : "");
   trigger.dataset.action = "trigger"; trigger.setAttribute("aria-label", "Reject post"); trigger.setAttribute("aria-description", status + (community ? `. ${community}` : ""));
   trigger.title = `${status}${community ? " · " + community : ""}`;
   trigger.setAttribute("aria-haspopup", "menu"); trigger.setAttribute("aria-expanded", "false"); trigger.setAttribute("aria-controls", menu.id);

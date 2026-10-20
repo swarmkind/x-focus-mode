@@ -1,3 +1,8 @@
+# v0.1.5 — centred button ring
+
+- Remove the partial lower ring on relevant posts so every outline thumb has the same centred circular treatment.
+- Live v0.1.4 checks now confirm rejection saves, Reveal is immediate, correction updates, and all three states preserve a 178 px post height. No public test reports were sent.
+
 # v0.1.4 — outline thumb and reliable rejection
 
 - Replace the emoji with a 20 px outline thumb, muted amber stroke and faint circular background.
@@ -14,7 +19,7 @@
 - Keep explicit choices when delayed model responses arrive.
 - Add browser checks for unchanged height, narrow menus, persistence and late model responses.
 
-Live X verification of this version is pending a manual extension reload. The existing demo and illustrated guides show v0.1.2.
+The existing demo and illustrated guides show v0.1.2.
 
 # v0.1.2 — live X controls and real-tweet demo
 
