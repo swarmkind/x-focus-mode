@@ -2,7 +2,9 @@
 
 **Your attention, your rules.** A small, open-source Chrome extension that adds personal filters and inspectable community warnings to X.
 
-> **Developer preview.** v0.1.2 was tested on the logged-in X home feed with local Ollama, including Reveal and correction. The real-tweet demo deliberately shows a model mistake. Automated tests use fictional feed data and a scripted model. Classifier quality, provider OAuth, 8 GB hardware and connectivity across separate networks remain release gates. There is no public Swarmkind relay or Chrome Web Store listing yet.
+> **Developer preview.** v0.1.3 replaces per-post banners with an action-row 👎 menu and floating Reveal control. Its compact layout is browser-tested; live X verification is pending an extension reload. v0.1.2 was tested on the logged-in X home feed with local Ollama, including Reveal and correction. The real-tweet demo deliberately shows a model mistake. Automated tests use fictional feed data and a scripted model. Classifier quality, provider OAuth, 8 GB hardware and connectivity across separate networks remain release gates. There is no public Swarmkind relay or Chrome Web Store listing yet.
+
+**Previous interface:** the video below shows v0.1.2.
 
 [![Actual X footage: correcting a mistaken local-model label](docs/demo-preview.jpg)](https://github.com/swarmkind/x-focus-mode/releases/download/v0.1.2/x-focus-mode-0.1.2-demo.mp4)
 

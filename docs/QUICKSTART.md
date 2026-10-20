@@ -16,7 +16,9 @@ For an update, replace the extracted files, click **Reload** on the extension ca
 
 Choose **Blur**, **Colour** or **Ignore** for each category. Add interests if you want personal highlights. “Suspected AI slop” is a content judgement, not proof that a person used AI.
 
-**Reveal** immediately shows a hidden post. It does not endorse the label or publish a human report. A community warning remains visible after Reveal. Use the explicit **Accurate** feedback control only when you agree with the category. The extension shares reports only when sharing is enabled and the post is eligible.
+**👎 Reject post** sits in the existing action row without adding post height. Click it, then choose a reason: Ragebait, Doomering, Engagement farming or Suspected AI slop. Your choice hides the post and is remembered on this device. When sharing is enabled and the post is eligible, choosing a reason also submits a human report.
+
+**Reveal** floats over hidden content and shows it immediately; it does not endorse or publish a report. The small community count on 👎 stays visible after Reveal. Open the menu for details, **Hide this post**, or **Incorrect · show this post** to undo a mistaken label. Escape or scrolling dismisses the menu.
 
 Community auto-blur starts off. If enabled, other people's reports can affect visibility; signed reports can still be mistaken or coordinated.
 

@@ -1,30 +1,30 @@
 {
-  "date": "2026-10-20T11:26:50.064Z",
+  "date": "2026-10-20T12:35:32.855Z",
   "browser": "151.0.7922.34",
   "results": [
     {
       "name": "onboarding defaults remain inactive until consent",
       "passed": true,
-      "ms": 24
+      "ms": 16
     },
     {
       "name": "real content script blurs, highlights, excludes own/protected posts",
       "passed": true,
-      "ms": 818
+      "ms": 820
     },
     {
       "name": "keyboard Reveal preserves focus and exposes labelled controls",
       "passed": true,
-      "ms": 25
+      "ms": 35
     },
     {
-      "name": "live-X flex row keeps warnings above full-width post content",
+      "name": "compact controls and open menus add zero post height",
       "passed": true,
-      "ms": 3
+      "ms": 42
     },
     {
       "name": "Reveal latency",
-      "ms": 0.20000004768371582
+      "ms": 0.5999999046325684
     },
     {
       "name": "Reveal is instant and is not a human confirmation",
@@ -39,27 +39,27 @@
     {
       "name": "30 repeated feed-card replacements keep one overlay per card",
       "passed": true,
-      "ms": 444
+      "ms": 432
     },
     {
       "name": "explicit feedback creates signed minimal human report",
       "passed": true,
-      "ms": 57
+      "ms": 98
     },
     {
       "name": "redraw preserves Reveal and community badge persists on detail",
       "passed": true,
-      "ms": 50
+      "ms": 75
     },
     {
       "name": "second installation receives warning with no model calls",
       "passed": true,
-      "ms": 861
+      "ms": 864
     },
     {
       "name": "offscreen peers establish native WebRTC and transfer reports",
       "passed": true,
-      "ms": 21
+      "ms": 22
     },
     {
       "name": "persistent peer byte budget refuses over-limit transfer",
@@ -69,7 +69,7 @@
     {
       "name": "network off switch closes offscreen document immediately",
       "passed": true,
-      "ms": 5
+      "ms": 4
     },
     {
       "name": "private content and preferences never reach relay",
@@ -79,32 +79,47 @@
     {
       "name": "settings fit a 360px window and expose maker/support links",
       "passed": true,
-      "ms": 84
+      "ms": 59
     },
     {
       "name": "Reveal restores existing native styles and inert state",
       "passed": true,
-      "ms": 172
+      "ms": 131
     },
     {
       "name": "Feedback stays in the feed and corrections update immediately across redraws",
       "passed": true,
-      "ms": 96
+      "ms": 75
+    },
+    {
+      "name": "reject an unflagged post, persist on refresh, undo locally",
+      "passed": true,
+      "ms": 407
+    },
+    {
+      "name": "narrow-screen menu stays inside viewport and dismisses on scroll/outside click",
+      "passed": true,
+      "ms": 210
     },
     {
       "name": "slow model fails open after one second, late result does not hide read card",
       "passed": true,
-      "ms": 2185
+      "ms": 2163
+    },
+    {
+      "name": "explicit rejection survives a late conflicting model result",
+      "passed": true,
+      "ms": 2057
     },
     {
       "name": "API mode sends keys only to its selected provider and excludes unknown visibility",
       "passed": true,
-      "ms": 214
+      "ms": 150
     },
     {
       "name": "excluded routes stay untouched and SPA navigation activates the home adapter",
       "passed": true,
-      "ms": 141
+      "ms": 108
     },
     {
       "name": "Observed fixture main-thread tasks over 50 ms",

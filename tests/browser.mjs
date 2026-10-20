@@ -71,6 +71,12 @@ async function configure(i, changes = {}) {
     });
   }, changes);
 }
+const status = (card, text) => card.locator(`.trigger[title*="${text}"]`);
+const reject = (card) => card.getByRole("button", { name: "Reject post", exact: true });
+async function choose(card, reason) {
+  await reject(card).click();
+  await card.getByRole("menuitem", { name: reason, exact: true }).click();
+}
 async function check(name, fn) {
   const at = performance.now();
   await fn();
@@ -85,7 +91,6 @@ try {
     assert.equal(await a.options.locator("#share").isChecked(), true);
     assert.equal(fixture.calls.length, 0);
   });
-  assert.equal((await configure(a)).status, "Settings saved");
   const feed = await a.context.newPage();
   await feed.addInitScript(() => {
     document.addEventListener("DOMContentLoaded", () => {
@@ -95,6 +100,9 @@ try {
     });
   });
   await feed.goto("http://127.0.0.1:4173/home");
+  const baseline = await feed.locator("article").evaluateAll(els => els.map(e => e.getBoundingClientRect().height));
+  assert.equal((await configure(a)).status, "Settings saved");
+  await feed.reload();
   const first = feed.locator("article").nth(0),
     second = feed.locator("article").nth(1);
   await check(
@@ -103,13 +111,8 @@ try {
       await first
         .getByRole("button", { name: "Reveal", exact: true })
         .waitFor();
-      await first
-        .locator(".label")
-        .filter({ hasText: "Engagement farming" })
-        .waitFor();
-      await second
-        .getByText("Matches your interests", { exact: true })
-        .waitFor();
+      await status(first, "Engagement farming").waitFor();
+      await status(second, "Matches your interests").waitFor();
       assert.ok(fixture.modelCalls.length > 0);
       assert.ok(fixture.modelCalls.every((call) => call.think === false));
       assert.equal(
@@ -133,11 +136,12 @@ try {
       await card.getByRole("button", { name: "Reveal", exact: true }).focus();
       await feed.keyboard.press("Enter");
       assert.equal(
-        await card
-          .getByRole("button", { name: "Hide", exact: true })
+        await reject(card)
           .evaluate((b) => b.getRootNode().activeElement === b),
         true,
       );
+      await feed.keyboard.press("Enter");
+      await feed.keyboard.press("End");
       await feed.keyboard.press("Enter");
       await card.getByRole("button", { name: "Reveal", exact: true }).waitFor();
       assert.equal(
@@ -147,13 +151,17 @@ try {
       await feed.evaluate(() => scrollTo(0, 0));
     },
   );
-  await check("live-X flex row keeps warnings above full-width post content", async () => {
-    assert.equal(await first.evaluate((article) => {
-      const host = article.querySelector("[data-xfm]");
-      const content = [...article.children].find((c) => c !== host);
-      const h = host.getBoundingClientRect(), c = content.getBoundingClientRect();
-      return h.bottom <= c.top + 1 && Math.abs(h.width - c.width) < 2;
-    }), true);
+  await check("compact controls and open menus add zero post height", async () => {
+    const heights = () => feed.locator("article").evaluateAll(els => els.map(e => e.getBoundingClientRect().height));
+    assert.deepEqual(await heights(), baseline);
+    await reject(first).click();
+    assert.deepEqual(await heights(), baseline);
+    await feed.keyboard.press("ArrowDown");
+    assert.equal(await first.getByRole("menuitem", { name: "Doomering", exact: true }).evaluate(b => b.getRootNode().activeElement === b), true);
+    await feed.keyboard.press("Escape");
+    assert.equal(await reject(first).getAttribute("aria-expanded"), "false");
+    assert.equal(await reject(first).evaluate(b => b.getRootNode().activeElement === b), true);
+    assert.deepEqual(await heights(), baseline);
   });
   await check("Reveal is instant and is not a human confirmation", async () => {
     const before = fixture.calls.filter(
@@ -161,7 +169,7 @@ try {
     ).length;
     const ms = await first.evaluate((article) => {
       const start = performance.now();
-      const root = article.querySelector("[data-xfm]").shadowRoot;
+      const root = article.querySelector("[data-xfm-overlay]").shadowRoot;
       [...root.querySelectorAll("button")]
         .find((b) => b.textContent === "Reveal")
         .click();
@@ -184,18 +192,20 @@ try {
       await first.evaluate((article) => {
         article.innerHTML = window.renderPost(window.fixturePosts[0]).innerHTML;
       });
-      await first.getByRole("button", { name: "Hide", exact: true }).waitFor();
+      await status(first, "Engagement farming").waitFor();
+      assert.equal(await first.getByRole("button", { name: "Reveal", exact: true }).count(), 0);
       await first.evaluate((article) => {
         article.innerHTML = window.renderPost(window.fixturePosts[2]).innerHTML;
       });
-      await first.locator(".label").filter({ hasText: "Doomering" }).waitFor();
+      await status(first, "Doomering").waitFor();
       await first
         .getByRole("button", { name: "Reveal", exact: true })
         .waitFor();
       await first.evaluate((article) => {
         article.innerHTML = window.renderPost(window.fixturePosts[0]).innerHTML;
       });
-      await first.getByRole("button", { name: "Hide", exact: true }).waitFor();
+      await status(first, "Engagement farming").waitFor();
+      assert.equal(await first.getByRole("button", { name: "Reveal", exact: true }).count(), 0);
     },
   );
   await check("30 repeated feed-card replacements keep one overlay per card", async () => {
@@ -203,19 +213,15 @@ try {
       await first.evaluate((article, index) => {
         article.innerHTML = window.renderPost(window.fixturePosts[index]).innerHTML;
       }, i % 2 ? 0 : 2);
-      await first.locator(".label").filter({
-        hasText: i % 2 ? "Engagement farming" : "Doomering",
-      }).waitFor();
+      await status(first, i % 2 ? "Engagement farming" : "Doomering").waitFor();
       assert.equal(await first.locator("[data-xfm]").count(), 1);
     }
   });
   await check(
     "explicit feedback creates signed minimal human report",
     async () => {
-      await first.locator("summary").click();
-      await first
-        .getByRole("button", { name: "Accurate", exact: true })
-        .click();
+      await choose(first, "Engagement farming");
+      await reject(first).click();
       await first
         .getByText("Signed human report published", { exact: true })
         .waitFor();
@@ -245,8 +251,10 @@ try {
   await check(
     "redraw preserves Reveal and community badge persists on detail",
     async () => {
+      await first.getByRole("button", { name: "Reveal", exact: true }).click();
       await feed.evaluate(() => window.loadFixture());
-      await first.getByRole("button", { name: "Hide", exact: true }).waitFor();
+      await status(first, "Engagement farming").waitFor();
+      assert.equal(await first.getByRole("button", { name: "Reveal", exact: true }).count(), 0);
       assert.equal(
         await first
           .getByRole("button", { name: "Reveal", exact: true })
@@ -256,7 +264,8 @@ try {
       await feed.goto(
         "http://127.0.0.1:4173/CircuitNotes/status/1000000000000000001",
       );
-      await first.getByText(/Community: 1 human report/).waitFor();
+      await status(first, "Community: 1 human report").waitFor();
+      await first.locator(".badge").waitFor();
     },
   );
   const b = await instance();
@@ -269,11 +278,7 @@ try {
   await check(
     "second installation receives warning with no model calls",
     async () => {
-      await peerFeed
-        .locator("article")
-        .first()
-        .getByText(/Community: 1 human report/)
-        .waitFor();
+      await status(peerFeed.locator("article").first(), "Community: 1 human report").waitFor();
       assert.equal(
         await peerFeed
           .locator("article")
@@ -283,10 +288,11 @@ try {
         0,
       );
       const card = peerFeed.locator("article").first();
-      await card.getByRole("button", { name: "Hide", exact: true }).click();
+      await choose(card, "Hide this post");
       await card.getByRole("button", { name: "Reveal", exact: true }).waitFor();
       await card.getByRole("button", { name: "Reveal", exact: true }).click();
-      await card.getByText(/Community: 1 human report/).waitFor();
+      await status(card, "Community: 1 human report").waitFor();
+      await card.locator(".badge").waitFor();
     },
   );
   await check(
@@ -374,11 +380,8 @@ try {
     fullPage: true,
   });
   await feed.goto("http://127.0.0.1:4173/home");
-  await first
-    .locator(".label")
-    .filter({ hasText: "Engagement farming" })
-    .waitFor();
-  await second.getByText("Matches your interests", { exact: true }).waitFor();
+  await status(first, "Engagement farming").waitFor();
+  await status(second, "Matches your interests").waitFor();
   await feed.screenshot({ path: "artifacts/feed.png" });
   await feed.setViewportSize({ width: 1280, height: 800 });
   await feed.screenshot({ path: "artifacts/store-feed.png" });
@@ -396,20 +399,12 @@ try {
   });
   await check("Reveal restores existing native styles and inert state", async () => {
     const page = await a.context.newPage();
-    await page.addInitScript(() => {
-      document.addEventListener("DOMContentLoaded", () => {
-        const child = document.querySelector("article > div:not([data-xfm])");
-        child.style.setProperty("filter", "grayscale(0.5)", "important");
-        child.style.setProperty("pointer-events", "auto", "important");
-        child.setAttribute("inert", "native");
-      });
-    });
-    await page.goto("http://127.0.0.1:4173/home");
+    await page.goto("http://127.0.0.1:4173/home?native=1");
     const card = page.locator("article").first();
-    await card.locator(".label").filter({ hasText: "Engagement farming" }).waitFor();
+    await status(card, "Engagement farming").waitFor();
     await card.getByRole("button", { name: "Reveal", exact: true }).click();
     assert.deepEqual(await card.evaluate((article) => {
-      const child = [...article.children].find((c) => !c.hasAttribute("data-xfm"));
+      const child = article.querySelector('[data-testid="tweetText"]');
       return {
         filter: child.style.filter,
         filterPriority: child.style.getPropertyPriority("filter"),
@@ -426,42 +421,88 @@ try {
       window.__nativeCardClicks = 0;
       article.addEventListener("click", () => window.__nativeCardClicks++);
     });
-    await card.locator("summary").click();
-    await card.getByRole("combobox", { name: "Report category" }).click();
-    await feed.keyboard.press("Escape");
-    await card.getByRole("button", { name: "Incorrect", exact: true }).click();
-    await card.locator(".label").filter({ hasText: /^Your correction · shown/ }).waitFor();
+    await choose(card, "Incorrect · show this post");
+    await status(card, "Your correction · shown").waitFor();
     assert.equal(await feed.evaluate(() => window.__nativeCardClicks), 0);
     assert.equal(await card.locator('[inert]').count(), 0);
     await card.evaluate((article) => {
       article.innerHTML = window.renderPost(window.fixturePosts[2]).innerHTML;
     });
-    await card.locator(".label").filter({ hasText: /^Your correction · shown/ }).waitFor();
+    await status(card, "Your correction · shown").waitFor();
+  });
+  await check("reject an unflagged post, persist on refresh, undo locally", async () => {
+    await configure(a, { share: false, seed: false });
+    await feed.reload();
+    const card = feed.locator("article").nth(3);
+    await status(card, "Reviewed").waitFor();
+    const height = await card.evaluate(e => e.getBoundingClientRect().height);
+    await choose(card, "Ragebait");
+    await card.getByRole("button", { name: "Reveal", exact: true }).waitFor();
+    await a.options.waitForFunction(async () => (await chrome.storage.local.get("rejections")).rejections?.["1000000000000000004"] === "ragebait");
+    assert.equal(await card.evaluate(e => e.getBoundingClientRect().height), height);
+    await feed.reload();
+    await status(card, "Rejected · Ragebait").waitFor();
+    await card.getByRole("button", { name: "Reveal", exact: true }).waitFor();
+    await choose(card, "Incorrect · show this post");
+    await status(card, "Your correction").waitFor();
+    await a.options.waitForFunction(async () => !(await chrome.storage.local.get("rejections")).rejections?.["1000000000000000004"]);
+    assert.equal(await card.getByRole("button", { name: "Reveal", exact: true }).count(), 0);
+  });
+  await check("narrow-screen menu stays inside viewport and dismisses on scroll/outside click", async () => {
+    await feed.setViewportSize({ width: 380, height: 800 });
+    await first.scrollIntoViewIfNeeded();
+    const height = await first.evaluate(e => e.getBoundingClientRect().height);
+    await reject(first).click();
+    const menu = first.getByRole("menu");
+    assert.equal(await menu.evaluate(e => { const r = e.getBoundingClientRect(); return r.left >= 0 && r.right <= innerWidth && r.top >= 0 && r.bottom <= innerHeight; }), true);
+    assert.equal(await first.evaluate(e => e.getBoundingClientRect().height), height);
+    await feed.screenshot({ path: "artifacts/compact-menu-mobile.png" });
+    await feed.mouse.click(5, 5);
+    await menu.waitFor({ state: "hidden" });
+    await reject(first).click();
+    await feed.mouse.wheel(0, 100);
+    await menu.waitFor({ state: "hidden" });
+    await feed.setViewportSize({ width: 1280, height: 800 });
+    await first.scrollIntoViewIfNeeded();
+    await reject(first).click();
+    await feed.screenshot({ path: "artifacts/compact-menu.png" });
+    await feed.keyboard.press("Escape");
   });
   await check(
     "slow model fails open after one second, late result does not hide read card",
     async () => {
       fixture.setDelay(1600);
-      await a.worker.evaluate(() => chrome.storage.session.clear());
+      await a.worker.evaluate(async () => { await chrome.storage.session.clear(); await chrome.storage.local.remove(["rejections", "corrections"]); });
       await configure(a, { share: false, seed: false });
       const slow = await a.context.newPage();
       await slow.goto("http://127.0.0.1:4173/home");
       const card = slow.locator("article").first();
-      await card.getByText("Unreviewed", { exact: true }).waitFor();
+      await status(card, "Unreviewed").waitFor();
       assert.equal(
         await card.getByRole("button", { name: "Reveal", exact: true }).count(),
         0,
       );
-      await card
-        .locator(".label")
-        .filter({ hasText: "Engagement farming" })
-        .waitFor();
+      await status(card, "Engagement farming").waitFor();
       assert.equal(
         await card.getByRole("button", { name: "Reveal", exact: true }).count(),
         0,
       );
     },
   );
+  await check("explicit rejection survives a late conflicting model result", async () => {
+    await a.worker.evaluate(() => chrome.storage.session.clear());
+    const page = await a.context.newPage();
+    await page.goto("http://127.0.0.1:4173/home");
+    const card = page.locator("article").nth(1);
+    await status(card, "Checking").waitFor();
+    await choose(card, "Ragebait");
+    await status(card, "Rejected · Ragebait").waitFor();
+    // Wait beyond the scripted 1.6-second response to exercise the late-result race.
+    await page.waitForTimeout(1900);
+    await status(card, "Rejected · Ragebait").waitFor();
+    await card.getByRole("button", { name: "Reveal", exact: true }).waitFor();
+    await page.close();
+  });
   await check(
     "API mode sends keys only to its selected provider and excludes unknown visibility",
     async () => {
@@ -510,11 +551,7 @@ try {
       assert.equal(result.status, "Settings saved");
       const apiPage = await a.context.newPage();
       await apiPage.goto("http://127.0.0.1:4173/home");
-      await apiPage
-        .locator("article")
-        .first()
-        .getByText("Reviewed · no filter applied", { exact: true })
-        .waitFor();
+      await status(apiPage.locator("article").first(), "Reviewed · no filter applied").waitFor();
       assert.ok(calls.length > 0);
       assert.ok(
         calls.every(
@@ -536,13 +573,7 @@ try {
         };
         document.getElementById("posts").prepend(window.renderPost(p));
       });
-      await apiPage
-        .locator("article")
-        .first()
-        .getByText("Unreviewed · public visibility unconfirmed", {
-          exact: true,
-        })
-        .waitFor();
+      await status(apiPage.locator("article").first(), "Unreviewed · public visibility unconfirmed").waitFor();
       assert.equal(calls.length, count);
     },
   );

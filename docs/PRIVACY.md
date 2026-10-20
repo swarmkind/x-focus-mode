@@ -12,11 +12,11 @@ Optional host access is requested for the provider and relay you select. No brow
 
 ## Processing on this device
 
-Settings, explicit interests, corrections, credentials and a pseudonymous signing key use Chrome local extension storage. API keys are associated with the exact endpoint and are inaccessible to content scripts; they are not Chrome-synced. Storage is not an OS credential vault. Someone who controls your browser profile may access it.
+Settings, explicit interests, rejection categories, corrections, credentials and a pseudonymous signing key use Chrome local extension storage. API keys are associated with the exact endpoint and are inaccessible to content scripts; they are not Chrome-synced. Storage is not an OS credential vault. Someone who controls your browser profile may access it.
 
-Assessment cache is session-only and bounded to 500 entries. It stores classification results and hashed cache keys, not post text. Feed text remains temporarily in a bounded in-memory work queue and is not written to disk by the application. Reveal state remains in memory. Explicit corrections are bounded to 1,000 IDs locally. Shared signed reports use a bounded IndexedDB cache, including unrelated assigned buckets; the cache is not exclusively a list of your feed posts. Local byte counters/cursors support replication and limits. No advertising, analytics SDKs or user tracking service is included.
+Assessment cache is session-only and bounded to 500 entries. It stores classification results and hashed cache keys, not post text. Feed text remains temporarily in a bounded in-memory work queue and is not written to disk by the application. Reveal state remains in memory. Explicit corrections and rejection categories are each bounded to 1,000 IDs locally. Shared signed reports use a bounded IndexedDB cache, including unrelated assigned buckets; the cache is not exclusively a list of your feed posts. Local byte counters/cursors support replication and limits. No advertising, analytics SDKs or user tracking service is included.
 
-“Clear cached reports” clears shared reports and session assessments. It preserves settings, credentials, the signing identity, local corrections and daily transfer budgets. “Remove saved provider keys” removes stored API credentials. Uninstalling removes extension-managed local data. Provider-side key revocation is separate.
+“Clear cached reports” clears shared reports and session assessments. It preserves settings, credentials, the signing identity, local corrections/rejections and daily transfer budgets. “Remove saved provider keys” removes stored API credentials. Uninstalling removes extension-managed local data. Provider-side key revocation is separate.
 
 ## Your selected model provider
 
@@ -24,7 +24,7 @@ API mode transmits eligible public post text, available quoted text, explicit in
 
 ## Community data
 
-The public report schema allows only: protocol version, exact tweet ID, fixed category codes, human/model source, model identifier, pseudonymous public key, signature, monotonically increasing revision, issue time, expiry and withdrawal status. There are no free-form reasons or post bodies. Revealing or dwelling on a post never confirms a report. “Accurate” explicitly creates a human report where eligible; “Incorrect” records a personal correction and, where sharing is enabled and eligible, publishes a withdrawal of your own report.
+The public report schema allows only: protocol version, exact tweet ID, fixed category codes, human/model source, model identifier, pseudonymous public key, signature, monotonically increasing revision, issue time, expiry and withdrawal status. There are no free-form reasons or post bodies. Revealing or dwelling on a post never confirms a report. Choosing a category from the 👎 menu explicitly rejects the post and creates a human report where sharing is enabled and eligible; “Incorrect · show this post” records a personal correction and, where sharing is enabled and eligible, publishes a withdrawal of your own report.
 
 A public signing key links contributions. Model identifiers and “human” labels are self-declared. Reports are not anonymised against correlation with public X content. A relay receives lookup IDs even if no report exists; the application does not persist lookup queries or IP addresses in D1. It uses transient IP-based admission counters. The relay and its infrastructure can still observe traffic, and hosting/security logs may exist under their operator's policies.
 

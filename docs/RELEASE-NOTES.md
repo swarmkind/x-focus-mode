@@ -1,3 +1,14 @@
+# v0.1.3 — compact post controls
+
+- Replace the per-post banner with a native-sized 👎 button in X’s existing action row.
+- Choose a rejection reason directly from a compact menu; explicit choices persist on this device.
+- Float Reveal over blurred content and preserve community counts after revealing.
+- Preserve post height, keyboard access and immediate corrections; dismiss menus on outside click, Escape or scrolling.
+- Keep explicit choices when delayed model responses arrive.
+- Add browser checks for unchanged height, narrow menus, persistence and late model responses.
+
+Live X verification of this version is pending a manual extension reload. The existing demo and illustrated guides show v0.1.2.
+
 # v0.1.2 — live X controls and real-tweet demo
 
 - Position warnings above X's flex-row post content, restoring the original direction on removal.

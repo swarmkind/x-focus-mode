@@ -33,6 +33,7 @@ interface LocalData {
   revision?: number;
   credentials?: Record<string, string>;
   corrections?: Record<string, boolean>;
+  rejections?: Record<string, Category>;
 }
 interface SessionData {
   assessments?: Record<string, Assessment>;
@@ -668,10 +669,9 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       ]);
       const item = seen.get(key);
       if (item) item.assessment = assessment;
-      const corrections =
-        (await chrome.storage.local.get<LocalData>("corrections"))
-          .corrections || {};
-      const correction = corrections[post.id] === true;
+      const feedback = await chrome.storage.local.get<LocalData>(["corrections", "rejections"]);
+      const correction = feedback.corrections?.[post.id] === true;
+      const rejection = feedback.rejections?.[post.id];
       if (eligible && assessment?.categories.length && !correction && s.share)
         void publish(post.id, assessment.categories, "model", s.model).catch(
           () => {},
@@ -680,6 +680,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         reports,
         assessment,
         correction,
+        rejection: rejection && categoryList([rejection]) ? rejection : undefined,
         status:
           s.mode === "community"
             ? "No community report"
@@ -701,9 +702,13 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       const item = seen.get(sender.tab!.id + ":" + msg.id);
       if (!item || Date.now() - item.at > 30 * 60_000)
         throw new Error("Reload this post before reporting");
-      const saved = await chrome.storage.local.get<LocalData>("corrections");
+      const saved = await chrome.storage.local.get<LocalData>(["corrections", "rejections"]);
       const corrections = { ...saved.corrections, [msg.id]: !msg.accurate };
+      const rejections = { ...saved.rejections };
+      if (msg.accurate) rejections[msg.id] = msg.category as Category;
+      else delete rejections[msg.id];
       await chrome.storage.local.set({
+        rejections: Object.fromEntries(Object.entries(rejections).slice(-1000)),
         corrections: Object.fromEntries(
           Object.entries(corrections).slice(-1000),
         ),

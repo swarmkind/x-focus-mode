@@ -114,13 +114,12 @@ try {
   await feed.goto("http://127.0.0.1:4173/home");
   const first = feed.locator("article").first();
   await first
-    .locator(".label")
-    .filter({ hasText: "Engagement farming" })
+    .locator('.trigger[title*="Engagement farming"]')
     .waitFor();
   await feed
     .locator("article")
     .nth(1)
-    .getByText("Matches your interests", { exact: true })
+    .locator('.trigger[title*="Matches your interests"]')
     .waitFor();
   await wait(600);
   let start = Date.now() / 1000;
@@ -129,9 +128,10 @@ try {
   await first.getByRole("button", { name: "Reveal", exact: true }).click();
   await feed.screenshot({ path: `${output}/revealed.png` });
   await wait(3000);
-  await first.locator("summary").click();
+  await first.getByRole("button", { name: "Reject post", exact: true }).click();
   await wait(2500);
-  await first.getByRole("button", { name: "Accurate", exact: true }).click();
+  await first.getByRole("menuitem", { name: "Engagement farming", exact: true }).click();
+  await first.getByRole("button", { name: "Reject post", exact: true }).click();
   await first
     .getByText("Signed human report published", { exact: true })
     .waitFor();
@@ -144,7 +144,7 @@ try {
   await second
     .locator("article")
     .first()
-    .getByText(/Community: 1 human report/)
+    .locator('.trigger[title*="Community: 1 human report"]')
     .waitFor();
   await wait(600);
   start = Date.now() / 1000;

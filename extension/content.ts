@@ -18,12 +18,15 @@ type Result = {
   reports: Report[];
   status?: string;
   correction?: boolean;
+  rejection?: Category;
 };
 type Card = {
   post: FeedPost;
   root: ShadowRoot;
   host: HTMLElement;
   article: HTMLElement;
+  actions: HTMLElement;
+  overlay: HTMLElement;
   timer?: ReturnType<typeof setTimeout>;
   timedOut: boolean;
   revealed: boolean;
@@ -37,18 +40,42 @@ type Card = {
   }[];
   manualHidden?: boolean;
   originalShadow: string;
-  originalDirection: string;
-  originalDirectionPriority: string;
+  originalPosition: string;
+  originalPositionPriority: string;
   feedbackStatus?: string;
+  feedbackVersion: number;
+  saving?: boolean;
   result?: Result;
 };
-const css = `:host{display:block!important;position:relative!important;font:13px/1.4 system-ui!important;color:#ddedeb!important;z-index:2}*{box-sizing:border-box} .bar{display:flex;align-items:center;flex-wrap:wrap;gap:7px;padding:9px 12px;background:#152a2c;border:1px solid #375557;border-radius:10px;margin:8px 0}button,select{font:inherit;color:inherit;background:#203b3e;border:1px solid #5b787a;border-radius:6px;padding:4px 8px;cursor:pointer}button:hover,button:focus-visible{background:#385b60;outline:2px solid #a4d7bd} .label{flex:1} .muted{color:#b1c4c7} .good{border-color:#a4d7bd} .pending{color:#c5d6d7} .feedback{display:flex;gap:6px;align-items:center;flex-wrap:wrap}details{width:100%}summary{cursor:pointer}small{display:block}`;
+const css = `
+:host{font:14px/1.4 system-ui;color:#182523;color-scheme:light dark}
+*{box-sizing:border-box}button{font:inherit;cursor:pointer}button:focus-visible{outline:2px solid #3b8b70;outline-offset:2px}
+.control{display:contents}.trigger{position:absolute;left:-5px;top:-17px;width:34px;height:34px;display:grid;place-items:center;padding:0;border:0;border-radius:50%;background:transparent;font-size:20px;line-height:1;transition:background .12s}
+.trigger:hover,.trigger[aria-expanded=true]{background:#e3eee780}.trigger.flagged{background:#e8bd572b}.trigger.relevant{box-shadow:inset 0 -2px #7daa91}
+.badge{position:absolute;right:-2px;top:-2px;min-width:12px;height:12px;padding:0 2px;border-radius:8px;background:#9b6a16;color:white;font:9px/12px system-ui}
+.menu{position:fixed;inset:auto;margin:0;padding:9px;width:266px;max-width:calc(100vw - 16px);border:1px solid #dce4df;border-radius:14px;background:#fff;color:#182523;box-shadow:0 8px 35px #0c211c24}
+.menu::backdrop{background:transparent}.heading{font-weight:650;padding:5px 9px 8px}.label{padding:0 9px 8px;font-size:12px;color:#52645b}.item{display:block;width:100%;border:0;background:transparent;color:inherit;text-align:left;border-radius:7px;padding:9px;line-height:1.3}.item:hover,.item:focus-visible{background:#eef4f0}.divider{height:1px;background:#e4ebe7;margin:6px 0}.note{display:block;margin:7px 9px 4px;font-size:11px;color:#52645b}.menu button:disabled{opacity:.5;cursor:wait}
+@media(prefers-color-scheme:dark){.menu{background:#182523;color:#e4eee8;border-color:#40534a}.item:hover,.item:focus-visible{background:#2c4036}.label,.note{color:#b1c5b8}.divider{background:#40534a}}
+`;
+const overlayCss = `:host{position:absolute!important;inset:0 0 42px!important;display:grid!important;place-items:center!important;pointer-events:none!important;z-index:2!important}button{pointer-events:auto;font:600 13px/1.3 system-ui;color:#e8f2eb;background:#182e27ed;border:1px solid #8eae9b;border-radius:20px;padding:9px 15px;cursor:pointer;box-shadow:0 3px 14px #10291e24}button:focus-visible{outline:2px solid #8ed4ad;outline-offset:3px}`;
 function message<T = any>(data: unknown): Promise<T> {
   return chrome.runtime.sendMessage(data);
 }
 function visible(el: HTMLElement) {
   const r = el.getBoundingClientRect();
   return r.bottom > 0 && r.top < innerHeight;
+}
+function blurTargets(card: Card) {
+  const targets: HTMLElement[] = [];
+  function visit(parent: HTMLElement) {
+    for (const child of parent.children) {
+      if (!(child instanceof HTMLElement) || child === card.actions || child === card.overlay) continue;
+      if (child.contains(card.actions)) visit(child);
+      else targets.push(child);
+    }
+  }
+  visit(card.article);
+  return targets;
 }
 function setHidden(card: Card, hidden: boolean) {
   for (const child of card.hidden) {
@@ -59,183 +86,136 @@ function setHidden(card: Card, hidden: boolean) {
   }
   card.hidden = [];
   if (!hidden) return;
-  // Keep the extension controls outside the inaccessible/blurred native subtree.
-  for (const child of card.article.children)
-    if (child !== card.host && child instanceof HTMLElement) {
-      card.hidden.push({
-        element: child,
-        filter: child.style.getPropertyValue("filter"),
-        filterPriority: child.style.getPropertyPriority("filter"),
-        pointerEvents: child.style.getPropertyValue("pointer-events"),
-        pointerPriority: child.style.getPropertyPriority("pointer-events"),
-        inert: child.getAttribute("inert"),
-      });
-      child.style.filter = "blur(9px)";
-      child.style.pointerEvents = "none";
-      child.setAttribute("inert", "");
-    }
+  // Keep X's action row usable while blurring the surrounding content branches.
+  for (const child of blurTargets(card)) {
+    card.hidden.push({ element: child, filter: child.style.getPropertyValue("filter"), filterPriority: child.style.getPropertyPriority("filter"), pointerEvents: child.style.getPropertyValue("pointer-events"), pointerPriority: child.style.getPropertyPriority("pointer-events"), inert: child.getAttribute("inert") });
+    child.style.setProperty("filter", "blur(9px)", "important");
+    child.style.setProperty("pointer-events", "none", "important");
+    child.setAttribute("inert", "");
+  }
 }
 function button(text: string, action: () => void) {
   const b = document.createElement("button");
   b.type = "button";
   b.textContent = text;
-  b.addEventListener("click", (e) => {
-    e.stopPropagation();
-    action();
-  });
+  b.addEventListener("click", (e) => { e.stopPropagation(); action(); });
   return b;
+}
+function rememberReveal(card: Card) {
+  revealed.add(card.post.id);
+  if (revealed.size > 1000) revealed.delete(revealed.values().next().value!);
+  card.revealed = true;
+  card.manualHidden = false;
+  clearTimeout(card.timer);
+  card.timedOut = true;
+}
+function closeMenus(event: Event) {
+  for (const card of active.values()) {
+    const menu = card.root.querySelector<HTMLElement>(".menu:popover-open");
+    const trigger = card.root.querySelector<HTMLElement>(".trigger");
+    if (!menu || !trigger) continue;
+    const rect = trigger.getBoundingClientRect();
+    if (event.type === "resize" || menu.dataset.anchor !== `${rect.left},${rect.top}`) menu.hidePopover();
+  }
 }
 function render(card: Card, pending = false) {
   if (!settings) return;
-  const focusedControl = card.root.activeElement?.textContent;
+  const wasOpen = !!card.root.querySelector(".menu:popover-open");
+  const focused = card.root.activeElement?.getAttribute("data-action");
+  const revealFocused = !!card.overlay.shadowRoot?.activeElement;
   const r = card.result;
   const reports = (r?.reports || []).filter((x) => !x.withdrawn);
-  const local = r?.assessment?.categories || [];
-  const categories = [
-    ...new Set([...local, ...reports.flatMap((x) => x.categories)]),
-  ];
-  const enabled = categories.filter((c) => settings!.actions[c] !== "ignore");
-  const blur =
-    enabled.some(
-      (c) =>
-        settings!.actions[c] === "blur" &&
-        (local.includes(c) ||
-          (settings!.communityBlur &&
-            reports.some((x) => x.categories.includes(c)))),
-    ) && !r?.correction;
-  card.article.style.boxShadow = enabled.length
-    ? "inset 3px 0 #b6a16e"
-    : r?.assessment?.relevant
-      ? "inset 3px 0 #a4d7bd"
-      : card.originalShadow;
-  const shouldHide =
-    (pending || blur || !!card.manualHidden) &&
-    !card.revealed &&
-    !(card.timedOut && visible(card.article));
+  const local = r?.rejection ? [r.rejection] : r?.assessment?.categories || [];
+  const enabled = [...new Set([...local, ...reports.flatMap((x) => x.categories)])].filter((c) => settings!.actions[c] !== "ignore");
+  const blur = !r?.correction && (r?.rejection || enabled.some((c) => settings!.actions[c] === "blur" && (local.includes(c) || (settings!.communityBlur && reports.some((x) => x.categories.includes(c))))));
+  card.article.style.boxShadow = enabled.length ? "inset 2px 0 #b6a16e" : r?.assessment?.relevant ? "inset 2px 0 #a4d7bd" : card.originalShadow;
+  const shouldHide = !!((pending || blur || card.manualHidden) && !card.revealed && !(card.timedOut && visible(card.article)));
   setHidden(card, shouldHide);
   card.root.replaceChildren();
-  const style = document.createElement("style");
-  style.textContent = css;
-  card.root.append(style);
-  const bar = document.createElement("div");
-  bar.className = "bar" + (r?.assessment?.relevant ? " good" : "");
-  bar.tabIndex = -1;
-  bar.setAttribute("role", "group");
-  bar.setAttribute("aria-label", "X Focus Mode");
-  bar.addEventListener("click", (event) => event.stopPropagation());
-  const label = document.createElement("span");
-  label.className = "label";
-  label.setAttribute("role", "status");
-  const human = reports.filter((x) => x.source === "human").length,
-    models = reports.filter((x) => x.source === "model").length;
-  label.textContent = pending
-    ? "Checking this post…"
-    : r?.correction
-      ? "Your correction · shown"
-      : enabled.length
-      ? enabled.map((c) => LABELS[c]).join(" · ")
-      : r?.assessment?.relevant
-        ? "Matches your interests"
-        : r?.assessment?.confidence === "clear"
-          ? "Reviewed · no filter applied"
-          : r?.status || "Unreviewed";
-  if (human || models) {
-    const count = document.createElement("small");
-    count.textContent = `Community: ${human} human report${human === 1 ? "" : "s"}, ${models} model assessment${models === 1 ? "" : "s"} · unverified claims`;
-    label.append(count);
+  const style = document.createElement("style"); style.textContent = css; card.root.append(style);
+  const control = document.createElement("div"); control.className = "control";
+  control.setAttribute("role", "group"); control.setAttribute("aria-label", "X Focus Mode");
+  for (const event of ["click", "pointerdown", "keydown"]) control.addEventListener(event, (e) => e.stopPropagation());
+  const human = reports.filter((x) => x.source === "human").length, models = reports.filter((x) => x.source === "model").length;
+  const status = pending ? "Checking this post…" : r?.correction ? "Your correction · shown" : r?.rejection ? `Rejected · ${LABELS[r.rejection]}` : enabled.length ? enabled.map((c) => LABELS[c]).join(" · ") : r?.assessment?.relevant ? "Matches your interests" : r?.assessment?.confidence === "clear" ? "Reviewed · no filter applied" : r?.status || "Unreviewed";
+  const community = human || models ? `Community: ${human} human report${human === 1 ? "" : "s"}, ${models} model assessment${models === 1 ? "" : "s"} · unverified claims` : "";
+  const menu = document.createElement("div"); menu.className = "menu"; menu.id = "reject-menu"; menu.setAttribute("popover", "auto"); menu.setAttribute("role", "menu"); menu.setAttribute("aria-label", "Why reject this post?");
+  function openMenu(focus = true) {
+    menu.showPopover();
+    const rect = trigger.getBoundingClientRect();
+    menu.dataset.anchor = `${rect.left},${rect.top}`;
+    menu.style.left = `${Math.max(8, Math.min(innerWidth - menu.offsetWidth - 8, rect.right - menu.offsetWidth))}px`;
+    menu.style.top = `${Math.max(8, rect.bottom + menu.offsetHeight + 8 <= innerHeight ? rect.bottom + 6 : rect.top - menu.offsetHeight - 6)}px`;
+    trigger.setAttribute("aria-expanded", "true");
+    if (focus) menu.querySelector<HTMLButtonElement>("button")?.focus({ preventScroll: true });
   }
-  bar.append(label);
-  if (shouldHide)
-    bar.append(
-      button("Reveal", () => {
-        revealed.add(card.post.id);
-        if (revealed.size > 1000)
-          revealed.delete(revealed.values().next().value!);
-        card.revealed = true;
-        card.manualHidden = false;
-        clearTimeout(card.timer);
-        card.timedOut = true;
-        render(card);
-        void message({ type: "reveal", id: card.post.id }).catch(() => {});
-      }),
-    );
-  else if (enabled.length)
-    bar.append(
-      button("Hide", () => {
-        revealed.delete(card.post.id);
-        card.revealed = false;
-        card.manualHidden = true;
-        card.timedOut = false;
-        render(card);
-      }),
-    );
-  if (!pending) {
-    const details = document.createElement("details"),
-      summary = document.createElement("summary");
-    summary.textContent = "Feedback";
-    details.append(summary);
-    const feedback = document.createElement("div");
-    feedback.className = "feedback";
-    const select = document.createElement("select");
-    select.setAttribute("aria-label", "Report category");
-    for (const c of CATEGORIES) {
-      const o = document.createElement("option");
-      o.value = c;
-      o.textContent = LABELS[c];
-      select.append(o);
+  const trigger = button("👎", () => { if (menu.matches(":popover-open")) menu.hidePopover(); else openMenu(); });
+  trigger.className = "trigger" + (enabled.length ? " flagged" : r?.assessment?.relevant ? " relevant" : "");
+  trigger.dataset.action = "trigger"; trigger.setAttribute("aria-label", "Reject post"); trigger.setAttribute("aria-description", status + (community ? `. ${community}` : ""));
+  trigger.title = `${status}${community ? " · " + community : ""}`;
+  trigger.setAttribute("aria-haspopup", "menu"); trigger.setAttribute("aria-expanded", "false"); trigger.setAttribute("aria-controls", menu.id);
+  if (human || models) { const badge = document.createElement("span"); badge.className = "badge"; badge.setAttribute("aria-hidden", "true"); badge.textContent = String(human + models); trigger.append(badge); }
+  menu.addEventListener("beforetoggle", (event) => trigger.setAttribute("aria-expanded", String((event as ToggleEvent).newState === "open")));
+  menu.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") { event.preventDefault(); menu.hidePopover(); trigger.focus({ preventScroll: true }); }
+    const items = [...menu.querySelectorAll<HTMLButtonElement>("button:not(:disabled)")];
+    const at = items.indexOf(card.root.activeElement as HTMLButtonElement);
+    let next: number | undefined;
+    if (event.key === "ArrowDown") next = (at + 1) % items.length;
+    if (event.key === "ArrowUp") next = (at - 1 + items.length) % items.length;
+    if (event.key === "Home") next = 0;
+    if (event.key === "End") next = items.length - 1;
+    if (next !== undefined) { event.preventDefault(); items[next]?.focus(); }
+    if (event.key === "Tab") menu.hidePopover();
+  });
+  const heading = document.createElement("div"); heading.className = "heading"; heading.textContent = "Less of this";
+  const label = document.createElement("div"); label.className = "label"; label.textContent = status + (community ? `. ${community}` : "");
+  menu.append(heading, label);
+  function item(text: string, action: string, run: () => void) {
+    const b = button(text, run); b.className = "item"; b.dataset.action = action; b.setAttribute("role", "menuitem"); menu.append(b); return b;
+  }
+  async function submit(category: Category, accurate: boolean) {
+    if (card.saving) return;
+    card.saving = true;
+    card.feedbackVersion++;
+    clearTimeout(card.timer);
+    const previous = card.result;
+    if (accurate) {
+      card.result = { ...card.result, reports, rejection: category, correction: false };
+      revealed.delete(card.post.id); card.revealed = false; card.manualHidden = true; card.timedOut = false;
+    } else {
+      rememberReveal(card); card.result = { ...card.result, reports, rejection: undefined, correction: true, assessment: undefined };
     }
-    if (enabled[0]) select.value = enabled[0];
-    const note = document.createElement("small");
-    note.textContent = card.feedbackStatus ||
-      (card.post.eligible && settings.share
-        ? "Your confirmation may publish a signed human report."
-        : "Feedback stays on this device; sharing eligibility is not established.");
-    async function submit(accurate: boolean) {
-      const response = await message({
-        type: "feedback",
-        id: card.post.id,
-        category: select.value,
-        accurate,
-      }).catch(() => ({ error: "Feedback could not be saved" }));
-      note.textContent = response.error || response.status;
-      card.feedbackStatus = note.textContent || undefined;
-      if (!accurate && !response.error) {
-        card.revealed = true;
-        card.manualHidden = false;
-        revealed.add(card.post.id);
-        card.result = {
-          ...card.result,
-          reports: reports,
-          correction: true,
-          assessment: undefined,
-        };
-        answers.set(card.post.id, card.result);
-        render(card);
-        card.root.querySelector<HTMLElement>(".bar")?.focus({ preventScroll: true });
-      }
-    }
-    feedback.append(
-      select,
-      button("Accurate", () => void submit(true)),
-      button("Incorrect", () => void submit(false)),
-      note,
-    );
-    details.append(feedback);
-    bar.append(details);
+    answers.set(card.post.id, card.result!);
+    card.feedbackStatus = "Saving…";
+    menu.hidePopover(); render(card); card.root.querySelector<HTMLButtonElement>(".trigger")?.focus({ preventScroll: true });
+    const response = await message({ type: "feedback", id: card.post.id, category, accurate }).catch(() => ({ error: "Feedback could not be saved" }));
+    if (active.get(card.article) !== card) return;
+    card.saving = false;
+    card.feedbackStatus = response.error || response.status;
+    if (response.error) { card.result = previous; rememberReveal(card); if (previous) answers.set(card.post.id, previous); else answers.delete(card.post.id); }
+    render(card);
+    if (response.error) card.root.querySelector<HTMLButtonElement>(".trigger")?.click();
   }
-  card.root.append(bar);
-  if (focusedControl === "Reveal" || focusedControl === "Hide") {
-    const buttons = [
-      ...card.root.querySelectorAll<HTMLButtonElement>("button"),
-    ];
-    (
-      buttons.find((b) => b.textContent === focusedControl) ||
-      buttons.find(
-        (b) => b.textContent === "Reveal" || b.textContent === "Hide",
-      ) ||
-      bar
-    ).focus({ preventScroll: true });
+  for (const category of CATEGORIES) item(LABELS[category], category, () => void submit(category, true)).disabled = !!card.saving;
+  if (enabled.length || r?.rejection) {
+    const divider = document.createElement("div"); divider.className = "divider"; menu.append(divider);
+    item("Incorrect · show this post", "correct", () => void submit(enabled[0] || r!.rejection!, false)).disabled = !!card.saving;
+    if (!shouldHide) item("Hide this post", "hide", () => { revealed.delete(card.post.id); card.revealed = false; card.manualHidden = true; card.timedOut = false; menu.hidePopover(); render(card); });
   }
+  const note = document.createElement("small"); note.className = "note"; note.setAttribute("role", "status");
+  note.textContent = card.feedbackStatus || (card.post.eligible && settings.share ? "Choosing a reason may share a signed human report." : "Saved only on this device. No public report will be sent."); menu.append(note);
+  control.append(trigger, menu); card.root.append(control);
+  const overlayRoot = card.overlay.shadowRoot!; overlayRoot.replaceChildren();
+  card.overlay.style.display = shouldHide ? "" : "none";
+  if (shouldHide) {
+    const style = document.createElement("style"); style.textContent = overlayCss;
+    const reveal = button("Reveal", () => { rememberReveal(card); render(card); card.root.querySelector<HTMLButtonElement>(".trigger")?.focus({ preventScroll: true }); void message({ type: "reveal", id: card.post.id }).catch(() => {}); });
+    reveal.title = status; overlayRoot.append(style, reveal);
+  }
+  if (wasOpen) openMenu(false);
+  if (focused) card.root.querySelector<HTMLButtonElement>(`[data-action="${focused}"]`)?.focus({ preventScroll: true });
+  if (revealFocused && shouldHide) overlayRoot.querySelector<HTMLButtonElement>("button")?.focus({ preventScroll: true });
 }
 async function inspect(article: HTMLElement) {
   if (!settings?.consent) return;
@@ -248,17 +228,18 @@ async function inspect(article: HTMLElement) {
       ?.match(/^\/([A-Za-z0-9_]{1,15})$/)?.[1] || "";
   const post = extract(article, metadata, viewer);
   const old = active.get(article);
-  if (!post) {
+  const actions = article.querySelector<HTMLElement>('[data-testid="reply"]')?.closest<HTMLElement>('[role="group"]');
+  if (!post || !actions) {
     if (old) remove(old);
     return;
   }
-  if (old?.post.id === post.id && old.host.isConnected) {
+  if (old?.post.id === post.id && old.host.parentElement === actions && old.overlay.isConnected) {
     if (old.post.eligible === post.eligible) {
       old.post = post;
       if (
         old.hidden.length &&
-        (old.hidden.some(({ element }) => element.parentElement !== article) ||
-          article.children.length !== old.hidden.length + 1)
+        (blurTargets(old).some((element, index) => old.hidden[index]?.element !== element) ||
+          blurTargets(old).length !== old.hidden.length)
       )
         render(old);
       return;
@@ -269,21 +250,29 @@ async function inspect(article: HTMLElement) {
   const host = document.createElement("div");
   host.dataset.xfm = "";
   const root = host.attachShadow({ mode: "open" });
-  article.prepend(host);
+  host.style.cssText = "display:inline-flex!important;position:relative!important;flex:0 0 24px!important;width:24px!important;height:0!important;align-self:center!important;margin:0!important;padding:0!important";
+  actions.append(host);
+  const overlay = document.createElement("div");
+  overlay.dataset.xfmOverlay = "";
+  overlay.attachShadow({ mode: "open" });
+  overlay.style.cssText = "position:absolute;inset:0 0 42px;pointer-events:none;z-index:2";
+  article.append(overlay);
   const card: Card = {
     post,
     root,
     host,
     article,
+    actions,
+    overlay,
     timedOut: false,
+    feedbackVersion: 0,
     revealed: revealed.has(post.id),
     hidden: [],
     originalShadow: article.style.boxShadow,
-    originalDirection: article.style.getPropertyValue("flex-direction"),
-    originalDirectionPriority: article.style.getPropertyPriority("flex-direction"),
+    originalPosition: article.style.getPropertyValue("position"),
+    originalPositionPriority: article.style.getPropertyPriority("position"),
   };
-  // X's article is a flex row; the warning must sit above its native content.
-  article.style.setProperty("flex-direction", "column", "important");
+  if (getComputedStyle(article).position === "static") article.style.setProperty("position", "relative");
   active.set(article, card);
   const cached = answers.get(post.id);
   if (cached) {
@@ -308,29 +297,30 @@ async function inspect(article: HTMLElement) {
       location.pathname !== currentPath
     )
       return;
-    card.result = result;
-    answers.set(post.id, result);
+    // A late model response must not overwrite an explicit rejection or correction.
+    card.result = card.feedbackVersion ? { ...result, rejection: card.result?.rejection, correction: card.result?.correction } : result;
+    answers.set(post.id, card.result);
     if (answers.size > 500) answers.delete(answers.keys().next().value!);
     clearTimeout(card.timer);
     render(card);
   } catch {
     clearTimeout(card.timer);
     card.timedOut = true;
-    card.result = {
-      reports: [],
-      status: "Unreviewed · connection unavailable",
-    };
+    card.result = { ...card.result, reports: card.result?.reports || [], status: "Unreviewed · connection unavailable" };
     render(card);
   }
 }
 function remove(card: Card) {
   card.article.style.boxShadow = card.originalShadow;
-  card.article.style.setProperty("flex-direction", card.originalDirection, card.originalDirectionPriority);
+  card.article.style.setProperty("position", card.originalPosition, card.originalPositionPriority);
   clearTimeout(card.timer);
   setHidden(card, false);
   card.host.remove();
+  card.overlay.remove();
   active.delete(card.article);
 }
+window.addEventListener("scroll", closeMenus, { capture: true, passive: true });
+window.addEventListener("resize", closeMenus);
 const ahead = new IntersectionObserver(
   (entries) => {
     for (const e of entries)
@@ -367,7 +357,7 @@ function scan() {
 const observer = new MutationObserver((records) => {
   if (
     records.every(
-      (r) => r.target instanceof Element && r.target.closest("[data-xfm]"),
+      (r) => r.target instanceof Element && r.target.closest("[data-xfm],[data-xfm-overlay]"),
     )
   )
     return;

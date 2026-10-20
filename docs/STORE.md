@@ -59,7 +59,7 @@ Declare **website content**, **web history/URLs or identifiers** as applicable t
 1. Install the package and open its settings. No network activity occurs until explicit consent and save.
 2. A real X login is required to exercise home-feed behaviour. Use a reviewer account; never supply a personal X password to this project.
 3. Connect a reviewer-controlled provider, or run Ollama; alternatively choose community-only with a deployed reviewer relay.
-4. Check Reveal, retained warning badge, explicit Accurate/Incorrect feedback, own/protected exclusions, and independent network switches.
+4. Check Reveal, retained warning badge, the 👎 reason menu and Incorrect correction, own/protected exclusions, and independent network switches.
 5. For a deterministic offline demonstration, the public repository's test harness builds a separate loopback-only fixture extension and runs the same implementation with fictional data. The test origin and mock model are **not** in the upload package.
 6. The preview requires live-site verification before final submission. Do not claim an undisclosed server or test account exists.
 
