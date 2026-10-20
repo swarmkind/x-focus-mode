@@ -448,6 +448,32 @@ try {
     await a.options.waitForFunction(async () => !(await chrome.storage.local.get("rejections")).rejections?.["1000000000000000004"]);
     assert.equal(await card.getByRole("button", { name: "Reveal", exact: true }).count(), 0);
   });
+  await check("rejection works after Chrome stops and restarts the background worker", async () => {
+    const card = feed.locator("article").nth(3);
+    const session = await a.context.newCDPSession(a.options);
+    const lifecycle = [];
+    let markRunning;
+    const restarted = new Promise(resolve => { markRunning = resolve; });
+    const stopped = new Promise(resolve => session.on("ServiceWorker.workerVersionUpdated", ({ versions }) => {
+      for (const version of versions) if (version.scriptURL === a.worker.url()) {
+        lifecycle.push(version.runningStatus);
+        if (version.runningStatus === "stopped") resolve();
+        if (version.runningStatus === "running" && lifecycle.includes("stopped")) markRunning();
+      }
+    }));
+    await session.send("ServiceWorker.enable");
+    await session.send("ServiceWorker.stopAllWorkers");
+    await stopped;
+    await choose(card, "Doomering");
+    await a.options.waitForFunction(async () => (await chrome.storage.local.get("rejections")).rejections?.["1000000000000000004"] === "doomering");
+    await restarted;
+    assert.ok(lifecycle.lastIndexOf("running") > lifecycle.indexOf("stopped"), lifecycle.join(","));
+    await status(card, "Rejected · Doomering").waitFor();
+    await card.getByRole("button", { name: "Reveal", exact: true }).waitFor();
+    await choose(card, "Incorrect · show this post");
+    await a.options.waitForFunction(async () => !(await chrome.storage.local.get("rejections")).rejections?.["1000000000000000004"]);
+    await session.detach();
+  });
   await check("narrow-screen menu stays inside viewport and dismisses on scroll/outside click", async () => {
     await feed.setViewportSize({ width: 380, height: 800 });
     await first.scrollIntoViewIfNeeded();

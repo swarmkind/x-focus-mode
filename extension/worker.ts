@@ -274,10 +274,6 @@ async function lookup(id: string): Promise<Report[]> {
   await primary(id, s);
   return getReports([id]);
 }
-const seen = new Map<
-  string,
-  { post: Post; eligible: boolean; assessment?: Assessment; at: number }
->();
 let identityPromise:
   | Promise<{ publicKey: string; privateKey: JsonWebKey }>
   | undefined;
@@ -580,7 +576,6 @@ async function save(value: unknown, token: unknown) {
   await chrome.storage.local.set({ settings: s, credentials });
   configPromise = Promise.resolve(s);
   for (const controller of requests) controller.abort();
-  seen.clear();
   await chrome.storage.session.remove("assessments");
   await networkLifecycle();
   for (const tab of await chrome.tabs.query({ url: "https://x.com/*" }))
@@ -656,9 +651,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         contextIncomplete: p.contextIncomplete,
       };
       const eligible = p.eligible && new URL(sender.url!).pathname === "/home";
-      const key = sender.tab!.id + ":" + post.id;
-      seen.set(key, { post, eligible, at: Date.now() });
-      if (seen.size > 500) seen.delete(seen.keys().next().value!);
       const [reports, assessment] = await Promise.all([
         lookup(post.id),
         msg.detail === true
@@ -667,8 +659,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
             ? classify(post, s)
             : undefined,
       ]);
-      const item = seen.get(key);
-      if (item) item.assessment = assessment;
       const feedback = await chrome.storage.local.get<LocalData>(["corrections", "rejections"]);
       const correction = feedback.corrections?.[post.id] === true;
       const rejection = feedback.rejections?.[post.id];
@@ -696,12 +686,12 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       if (
         !tweetId(msg.id) ||
         typeof msg.accurate !== "boolean" ||
+        typeof msg.eligible !== "boolean" ||
         !categoryList([msg.category])
       )
         throw new Error("Invalid feedback");
-      const item = seen.get(sender.tab!.id + ":" + msg.id);
-      if (!item || Date.now() - item.at > 30 * 60_000)
-        throw new Error("Reload this post before reporting");
+      // The trusted content script supplies current visibility; worker memory may be suspended.
+      const eligible = msg.eligible && new URL(sender.url!).pathname === "/home";
       const saved = await chrome.storage.local.get<LocalData>(["corrections", "rejections"]);
       const corrections = { ...saved.corrections, [msg.id]: !msg.accurate };
       const rejections = { ...saved.rejections };
@@ -713,7 +703,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
           Object.entries(corrections).slice(-1000),
         ),
       });
-      if (item.eligible && s.share && s.relay) {
+      if (eligible && s.share && s.relay) {
         try {
           await publish(
             msg.id,

@@ -1,3 +1,10 @@
+# v0.1.4 — outline thumb and reliable rejection
+
+- Replace the emoji with a 20 px outline thumb, muted amber stroke and faint circular background.
+- Keep the existing action-row dimensions and quick rejection menu.
+- Fix rejection after Chrome suspends the background worker. Validate current post eligibility from the trusted content script without depending on an expired in-memory record.
+- Add a regression that stops the actual extension worker, submits a rejection, verifies restart and saved state, then undoes the rejection.
+
 # v0.1.3 — compact post controls
 
 - Replace the per-post banner with a native-sized 👎 button in X’s existing action row.

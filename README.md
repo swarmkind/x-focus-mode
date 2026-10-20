@@ -2,7 +2,7 @@
 
 **Your attention, your rules.** A small, open-source Chrome extension that adds personal filters and inspectable community warnings to X.
 
-> **Developer preview.** v0.1.3 replaces per-post banners with an action-row 👎 menu and floating Reveal control. Its compact layout is browser-tested; live X verification is pending an extension reload. v0.1.2 was tested on the logged-in X home feed with local Ollama, including Reveal and correction. The real-tweet demo deliberately shows a model mistake. Automated tests use fictional feed data and a scripted model. Classifier quality, provider OAuth, 8 GB hardware and connectivity across separate networks remain release gates. There is no public Swarmkind relay or Chrome Web Store listing yet.
+> **Developer preview.** v0.1.4 replaces per-post banners with an action-row 👎 menu and floating Reveal control. Its compact layout is browser-tested. The v0.1.3 menu also kept a live post at 118 px while open and blurred; the outline-icon update awaits a live reload. v0.1.2 was tested on the logged-in X home feed with local Ollama, including Reveal and correction. The real-tweet demo deliberately shows a model mistake. Automated tests use fictional feed data and a scripted model. Classifier quality, provider OAuth, 8 GB hardware and connectivity across separate networks remain release gates. There is no public Swarmkind relay or Chrome Web Store listing yet.
 
 **Previous interface:** the video below shows v0.1.2.
 
