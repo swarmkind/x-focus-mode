@@ -1,26 +1,26 @@
 {
-  "date": "2026-10-20T12:54:14.868Z",
+  "date": "2026-10-20T13:02:34.217Z",
   "browser": "151.0.7922.34",
   "results": [
     {
       "name": "onboarding defaults remain inactive until consent",
       "passed": true,
-      "ms": 17
+      "ms": 20
     },
     {
       "name": "real content script blurs, highlights, excludes own/protected posts",
       "passed": true,
-      "ms": 805
+      "ms": 809
     },
     {
       "name": "keyboard Reveal preserves focus and exposes labelled controls",
       "passed": true,
-      "ms": 35
+      "ms": 42
     },
     {
       "name": "compact controls and open menus add zero post height",
       "passed": true,
-      "ms": 38
+      "ms": 50
     },
     {
       "name": "Reveal latency",
@@ -29,37 +29,37 @@
     {
       "name": "Reveal is instant and is not a human confirmation",
       "passed": true,
-      "ms": 3
+      "ms": 4
     },
     {
       "name": "same DOM card recycling preserves reveal and refreshes a changed tweet ID",
       "passed": true,
-      "ms": 60
+      "ms": 61
     },
     {
       "name": "30 repeated feed-card replacements keep one overlay per card",
       "passed": true,
-      "ms": 536
+      "ms": 441
     },
     {
       "name": "explicit feedback creates signed minimal human report",
       "passed": true,
-      "ms": 108
+      "ms": 104
     },
     {
       "name": "redraw preserves Reveal and community badge persists on detail",
       "passed": true,
-      "ms": 79
+      "ms": 81
     },
     {
       "name": "second installation receives warning with no model calls",
       "passed": true,
-      "ms": 1114
+      "ms": 872
     },
     {
       "name": "offscreen peers establish native WebRTC and transfer reports",
       "passed": true,
-      "ms": 18
+      "ms": 22
     },
     {
       "name": "persistent peer byte budget refuses over-limit transfer",
@@ -79,52 +79,62 @@
     {
       "name": "settings fit a 360px window and expose maker/support links",
       "passed": true,
-      "ms": 63
+      "ms": 64
     },
     {
       "name": "Reveal restores existing native styles and inert state",
       "passed": true,
-      "ms": 132
+      "ms": 126
     },
     {
       "name": "Feedback stays in the feed and corrections update immediately across redraws",
       "passed": true,
-      "ms": 84
+      "ms": 53
     },
     {
       "name": "reject an unflagged post, persist on refresh, undo locally",
       "passed": true,
-      "ms": 437
+      "ms": 422
     },
     {
       "name": "rejection works after Chrome stops and restarts the background worker",
       "passed": true,
-      "ms": 84
+      "ms": 81
     },
     {
       "name": "narrow-screen menu stays inside viewport and dismisses on scroll/outside click",
       "passed": true,
-      "ms": 226
+      "ms": 212
     },
     {
       "name": "slow model fails open after one second, late result does not hide read card",
       "passed": true,
-      "ms": 2180
+      "ms": 2172
     },
     {
       "name": "explicit rejection survives a late conflicting model result",
       "passed": true,
-      "ms": 2071
+      "ms": 2067
     },
     {
       "name": "API mode sends keys only to its selected provider and excludes unknown visibility",
       "passed": true,
-      "ms": 201
+      "ms": 218
     },
     {
       "name": "excluded routes stay untouched and SPA navigation activates the home adapter",
       "passed": true,
-      "ms": 120
+      "ms": 192
+    },
+    {
+      "name": "downvote tint saves from the colour picker, survives reload and resets",
+      "passed": true,
+      "ms": 665
+    },
+    {
+      "name": "settings reject malformed colours without replacing the saved choice",
+      "passed": true,
+      "ms": 15
     },
     {
       "name": "Observed fixture main-thread tasks over 50 ms",

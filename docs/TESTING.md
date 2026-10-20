@@ -9,12 +9,13 @@ Developer preview, 20 October 2026. Test source is included so results can be re
 | TypeScript | Passed | Extension and Cloudflare relay configurations |
 | Unit and SQLite tests | 9 passed | Signed schema, tampering, expiry, revision ordering, model parser, unknown visibility, endpoint boundaries, atomic database updates and capacity |
 | Local relay integration | Passed | Real Worker/D1 emulator: submissions, rejected replay/tampering/private fields, withdrawals, incremental sync, peer capacity and rediscovery |
-| Installed Chrome extension | 24 scenarios passed | Two isolated Chrome profiles, actual unpacked content script, worker and offscreen page; fictional X-shaped feed and scripted model |
+| Installed Chrome extension | 26 scenarios passed | Two isolated Chrome profiles, actual unpacked content script, worker and offscreen page; fictional X-shaped feed and scripted model |
 | Native WebRTC | Passed locally | Second installation retrieved signed reports over a real data channel after its cache was cleared |
 | Distribution off switch | Passed | Offscreen document and its connections close immediately |
 | API boundary | Passed with mocked provider | Key goes only to the configured HTTPS provider; unknown visibility is excluded |
 | Keyboard controls | Passed | Reveal transfers focus to 👎; arrow keys and Escape work in the rejection menu |
 | Compact post layout | Passed | Exact height matches the inactive extension baseline; open menus and blurs add no height |
+| Downvote tint | Passed | Native picker saves custom colour, settings/feed reloads preserve it, Reset restores pastel red, invalid values are rejected; height unchanged |
 | Narrow post menu | Passed | Menu fits a 380 px viewport; outside click and scrolling dismiss it |
 | Worker suspension | Passed | Chrome stopped the real worker; rejection restarted it, saved the chosen category and could be undone |
 | Explicit rejection | Passed | Unflagged posts can be rejected; choices persist across refresh, can be undone, and survive delayed model results |
@@ -22,7 +23,7 @@ Developer preview, 20 October 2026. Test source is included so results can be re
 | Repeated DOM replacement | Passed | 30 alternating post replacements in one card; one overlay remains per card |
 | Native state restoration | Passed | Reveal restores pre-existing inline filter/pointer styles, priorities and inert attribute |
 | Narrow settings window | Passed | No horizontal overflow at 360 px; maker and planned coffee links present |
-| Live X interaction | v0.1.2 passed; v0.1.4 interactions passed; v0.1.6 style reload pending | v0.1.4: rejection saved locally, Reveal and correction worked without leaving the feed; all states kept the post at 178 px. Sharing/distribution off |
+| Live X interaction | v0.1.2 passed; v0.1.4 interactions passed; v0.1.7 style reload pending | v0.1.4: rejection saved locally, Reveal and correction worked without leaving the feed; all states kept the post at 178 px. Sharing/distribution off |
 | Local Ollama inference | Executed | Qwen3.5:latest, 9.7B Q4_K_M, 64 GB M2 Max; see EVALUATION.md for failures and limits |
 
 [Machine-readable browser results](browser-results.json) include the exact Chrome version, timestamps and timings. The measured Reveal operation is an in-page interaction, not a claim about full input-to-display latency. The long-task observer covers the whole fixture page; it is not an extension-only CPU profile.
@@ -37,7 +38,7 @@ Browser tests clear **only the local D1 emulator's report table**. Use disposabl
 
 ## Unverified release gates
 
-- **Live X:** v0.1.3’s menu and blur preserved the live post height; live use exposed and led to a fix for worker suspension. v0.1.4 passed live rejection, Reveal and correction checks with a constant 178 px post height. v0.1.5’s icon and ring centres were verified to coincide on live X. The selected v0.1.6 divider treatment passed fixture layout checks and awaits its live reload. v0.1.2 was manually reloaded and tested on the authorized logged-in home feed. Live testing found and fixed flex-row layout, Feedback click propagation and delayed correction display. Current public-visibility coverage, protected-content handling and sustained workloads still need broader live validation. Unknown visibility cannot be shared or sent to a remote provider.
+- **Live X:** v0.1.3’s menu and blur preserved the live post height; live use exposed and led to a fix for worker suspension. v0.1.4 passed live rejection, Reveal and correction checks with a constant 178 px post height. v0.1.5’s icon and ring centres were verified to coincide on live X. The selected divider and v0.1.7 custom tint passed fixture layout checks and await the latest live reload. v0.1.2 was manually reloaded and tested on the authorized logged-in home feed. Live testing found and fixed flex-row layout, Feedback click propagation and delayed correction display. Current public-visibility coverage, protected-content handling and sustained workloads still need broader live validation. Unknown visibility cannot be shared or sent to a remote provider.
 - **Models:** real provider OAuth and real API responses remain unverified. Existing local Ollama completed 16 calibration and 12 fresh synthetic challenge cases. Real classification quality, confidence calibration and a minimum model size are not established; see [evaluation details](EVALUATION.md).
 - **Hardware:** tests ran on an Apple M2 Max with 64 GB RAM. No 8 GB machine, memory ceiling, sustained feed workload or battery measurement has been validated.
 - **Network:** cross-network NAT traversal, large-swarm topology and hostile peers. Local WebRTC success is a narrower result; HTTPS fallback remains necessary.

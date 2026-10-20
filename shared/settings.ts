@@ -9,6 +9,7 @@ export interface Settings {
   seed: boolean;
   share: boolean;
   communityBlur: boolean;
+  downvoteColor: string;
   actions: Record<Category, "blur" | "colour" | "ignore">;
 }
 export const defaults: Settings = {
@@ -21,19 +22,21 @@ export const defaults: Settings = {
   seed: true,
   share: true,
   communityBlur: false,
+  downvoteColor: "#ef9a9a",
   actions: Object.fromEntries(
     CATEGORIES.map((c) => [c, "blur"]),
   ) as Settings["actions"],
 };
 export type FeedSettings = Pick<
   Settings,
-  "consent" | "actions" | "communityBlur" | "share"
+  "consent" | "actions" | "communityBlur" | "share" | "downvoteColor"
 >;
 export function publicSettings(s: Settings): FeedSettings {
   return {
     consent: s.consent,
     actions: s.actions,
     communityBlur: s.communityBlur,
+    downvoteColor: s.downvoteColor,
     share: s.share,
   };
 }

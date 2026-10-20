@@ -68,6 +68,7 @@ $("settings").addEventListener("submit", (e) => {
       seed: $("seed").checked,
       share: $("share").checked,
       communityBlur: $("communityBlur").checked,
+      downvoteColor: $("downvoteColor").value,
       actions: Object.fromEntries(
         CATEGORIES.map((c) => [c, $<HTMLSelectElement>(c).value]),
       ) as Settings["actions"],
@@ -87,6 +88,9 @@ $("settings").addEventListener("submit", (e) => {
   });
 });
 $("mode").addEventListener("change", () => modeChanged(true));
+$("resetColor").addEventListener("click", () => {
+  $("downvoteColor").value = defaults.downvoteColor;
+});
 $("oauth").addEventListener(
   "click",
   () =>
@@ -113,7 +117,7 @@ $("clear").addEventListener(
 void chrome.runtime.sendMessage({ type: "settings" }).then((s: Settings) => {
   for (const k of ["consent", "seed", "share", "communityBlur"] as const)
     $(k).checked = s[k];
-  for (const k of ["mode", "provider", "model", "interests", "relay"] as const)
+  for (const k of ["mode", "provider", "model", "interests", "relay", "downvoteColor"] as const)
     $(k).value = s[k];
   for (const c of CATEGORIES) $<HTMLSelectElement>(c).value = s.actions[c];
   modeChanged();

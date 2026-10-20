@@ -439,3 +439,6 @@ aside {
     gap: 8px 16px;
   }
 }
+
+.colour-control { display: flex; align-items: center; gap: 14px; }
+.colour-control input[type="color"] { width: 58px; height: 38px; padding: 4px; cursor: pointer; }

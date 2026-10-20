@@ -20,6 +20,8 @@ Choose **Blur**, **Colour** or **Ignore** for each category. Add interests if yo
 
 **Reveal** floats over hidden content and shows it immediately; it does not endorse or publish a report. The small community count on 👎 stays visible after Reveal. Open the menu for details, **Hide this post**, or **Incorrect · show this post** to undo a mistaken label. Escape or scrolling dismisses the menu.
 
+Under **Set your filters**, use **Downvote background colour** to customise the soft tint beside the divider. It starts pastel red. **Reset colour** restores the default; click **Save settings** to apply your choice to open X tabs. The colour is stored only in this browser and is not included in shared reports.
+
 Community auto-blur starts off. If enabled, other people's reports can affect visibility; signed reports can still be mistaken or coordinated.
 
 ## 4. Review and enable

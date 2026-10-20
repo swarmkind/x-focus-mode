@@ -50,7 +50,7 @@ type Card = {
 const css = `
 :host{font:14px/1.4 system-ui;color:#182523;color-scheme:light dark}
 *{box-sizing:border-box}button{font:inherit;cursor:pointer}button:focus-visible{outline:2px solid #3b8b70;outline-offset:2px}
-:host::before{content:"";position:absolute;left:0;top:-10px;width:1px;height:20px;background:var(--xfm-icon,#414a53);opacity:.35;pointer-events:none}.control{display:contents}.trigger{position:absolute;left:14px;top:-17px;width:34px;height:34px;display:grid;place-items:center;padding:0;border:0;border-radius:6px;background:transparent;color:var(--xfm-icon,#414a53);font-size:20px;line-height:1;transition:color .12s}.trigger svg{width:20px;height:20px;display:block}
+:host::before{content:"";position:absolute;left:0;top:-10px;width:1px;height:20px;background:var(--xfm-icon,#414a53);opacity:.35;pointer-events:none}:host::after{content:"";position:absolute;left:10px;top:-16px;width:42px;height:32px;border-radius:4px;background:color-mix(in srgb,var(--xfm-tint) 25%,transparent);pointer-events:none;z-index:0}.control{display:contents}.trigger{position:absolute;left:14px;top:-17px;z-index:1;width:34px;height:34px;display:grid;place-items:center;padding:0;border:0;border-radius:6px;background:transparent;color:var(--xfm-icon,#414a53);font-size:20px;line-height:1;transition:color .12s}.trigger svg{width:20px;height:20px;display:block}
 .trigger:hover,.trigger[aria-expanded=true]{opacity:.75}.trigger.flagged{color:#986622}
 .badge{position:absolute;right:-2px;top:-2px;min-width:12px;height:12px;padding:0 2px;border-radius:8px;background:#9b6a16;color:white;font:9px/12px system-ui}
 .menu{position:fixed;inset:auto;margin:0;padding:9px;width:266px;max-width:calc(100vw - 16px);border:1px solid #dce4df;border-radius:14px;background:#fff;color:#182523;box-shadow:0 8px 35px #0c211c24}
@@ -120,6 +120,7 @@ function closeMenus(event: Event) {
 }
 function render(card: Card, pending = false) {
   if (!settings) return;
+  card.host.style.setProperty("--xfm-tint", settings.downvoteColor);
   const wasOpen = !!card.root.querySelector(".menu:popover-open");
   const focused = card.root.activeElement?.getAttribute("data-action");
   const revealFocused = !!card.overlay.shadowRoot?.activeElement;

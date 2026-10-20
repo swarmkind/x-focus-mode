@@ -625,6 +625,55 @@ try {
       await page.locator("[data-xfm]").first().waitFor({ state: "detached" });
     },
   );
+  await check("downvote tint saves from the colour picker, survives reload and resets", async () => {
+    await a.options.reload();
+    await a.options.waitForFunction(() => document.querySelector("#downvoteColor").value === "#ef9a9a");
+    const page = await a.context.newPage();
+    await page.goto("http://127.0.0.1:4173/home");
+    const card = page.locator("article").first();
+    await reject(card).waitFor();
+    const height = await card.evaluate(e => e.getBoundingClientRect().height);
+    const tint = () => card.locator("[data-xfm]").evaluate(e => getComputedStyle(e, "::after").backgroundColor);
+    const original = await tint();
+    await a.options.locator("#downvoteColor").evaluate(input => {
+      input.value = "#93b9e8";
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+    });
+    await a.options.getByRole("button", { name: "Save settings", exact: true }).click();
+    await a.options.locator("#status").filter({ hasText: "Settings saved" }).waitFor();
+    // Deliver the same settings event used on X to the isolated loopback fixture.
+    await a.options.evaluate(async () => {
+      for (const tab of await chrome.tabs.query({ url: "http://127.0.0.1:4173/*" }))
+        await chrome.tabs.sendMessage(tab.id, { type: "settings-changed" });
+    });
+    await card.locator('[data-xfm][style*="#93b9e8"]').waitFor({ state: "attached" });
+    assert.notEqual(await tint(), original);
+    assert.equal(await card.evaluate(e => e.getBoundingClientRect().height), height);
+    await a.options.reload();
+    await a.options.waitForFunction(() => document.querySelector("#downvoteColor").value === "#93b9e8");
+    await page.reload();
+    await card.locator('[data-xfm][style*="#93b9e8"]').waitFor({ state: "attached" });
+    await a.options.locator("section").filter({ has: a.options.getByRole("heading", { name: "Set your filters", exact: true }) }).screenshot({ path: "artifacts/colour-settings.png" });
+    await a.options.getByRole("button", { name: "Reset colour", exact: true }).click();
+    assert.equal(await a.options.locator("#downvoteColor").inputValue(), "#ef9a9a");
+    await a.options.getByRole("button", { name: "Save settings", exact: true }).click();
+    await a.options.locator("#status").filter({ hasText: "Settings saved" }).waitFor();
+    await page.reload();
+    await card.locator('[data-xfm][style*="#ef9a9a"]').waitFor({ state: "attached" });
+    assert.equal(await tint(), original);
+    await page.screenshot({ path: "artifacts/default-tint-feed.png" });
+    await page.close();
+  });
+  await check("settings reject malformed colours without replacing the saved choice", async () => {
+    for (const value of ["red", "#123", "#123456;display:none", null]) {
+      const result = await a.options.evaluate(async downvoteColor => {
+        const settings = await chrome.runtime.sendMessage({ type: "settings" });
+        return chrome.runtime.sendMessage({ type: "save", settings: { ...settings, downvoteColor }, token: "" });
+      }, value);
+      assert.ok(result.error);
+    }
+    assert.equal(await a.options.evaluate(async () => (await chrome.runtime.sendMessage({ type: "settings" })).downvoteColor), "#ef9a9a");
+  });
   const longTasks = await feed.evaluate(() => window.__xfmLongTasks || []);
   results.push({
     name: "Observed fixture main-thread tasks over 50 ms",

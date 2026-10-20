@@ -539,6 +539,8 @@ async function save(value: unknown, token: unknown) {
     typeof s.model !== "string" ||
     s.model.length > 96 ||
     /[^\x20-\x7E]/.test(s.model) ||
+    typeof s.downvoteColor !== "string" ||
+    !/^#[0-9a-f]{6}$/i.test(s.downvoteColor) ||
     typeof s.interests !== "string" ||
     s.interests.length > 1000 ||
     !["consent", "seed", "share", "communityBlur"].every(

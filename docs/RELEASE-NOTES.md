@@ -1,3 +1,10 @@
+# v0.1.7 — customisable downvote tint
+
+- Add a subtle pastel-red background behind the downvote section, keeping the divider and post height unchanged.
+- Add a native colour picker and Reset colour control under Set your filters; choices persist locally and apply when settings are saved.
+- Validate saved colours as six-digit hex values. Existing installations inherit the default tint.
+- Verify custom colour, page reload persistence, reset, invalid-value rejection and unchanged post height in Chrome.
+
 # v0.1.6 — quiet divider
 
 - Apply selected design C: a graphite outline thumb, short vertical divider and extra space after Share.
