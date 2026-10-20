@@ -13,3 +13,4 @@ videos/**/.tmp/
 videos/**/.thumbnails/
 videos/**/.transcode-cache/
 videos/**/capture/live/*.jpg
+videos/**/capture/live/*.mov

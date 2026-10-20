@@ -87,6 +87,13 @@ try {
   });
   assert.equal((await configure(a)).status, "Settings saved");
   const feed = await a.context.newPage();
+  await feed.addInitScript(() => {
+    document.addEventListener("DOMContentLoaded", () => {
+      const style = document.createElement("style");
+      style.textContent = 'article { display:flex; flex-direction:row } article > div { flex:1; min-width:0 }';
+      document.head.append(style);
+    });
+  });
   await feed.goto("http://127.0.0.1:4173/home");
   const first = feed.locator("article").nth(0),
     second = feed.locator("article").nth(1);
@@ -140,6 +147,14 @@ try {
       await feed.evaluate(() => scrollTo(0, 0));
     },
   );
+  await check("live-X flex row keeps warnings above full-width post content", async () => {
+    assert.equal(await first.evaluate((article) => {
+      const host = article.querySelector("[data-xfm]");
+      const content = [...article.children].find((c) => c !== host);
+      const h = host.getBoundingClientRect(), c = content.getBoundingClientRect();
+      return h.bottom <= c.top + 1 && Math.abs(h.width - c.width) < 2;
+    }), true);
+  });
   await check("Reveal is instant and is not a human confirmation", async () => {
     const before = fixture.calls.filter(
       (x) => x.path === "/v1/report" && JSON.parse(x.body).source === "human",
@@ -383,7 +398,7 @@ try {
     const page = await a.context.newPage();
     await page.addInitScript(() => {
       document.addEventListener("DOMContentLoaded", () => {
-        const child = document.querySelector("article > div");
+        const child = document.querySelector("article > div:not([data-xfm])");
         child.style.setProperty("filter", "grayscale(0.5)", "important");
         child.style.setProperty("pointer-events", "auto", "important");
         child.setAttribute("inert", "native");
@@ -404,6 +419,24 @@ try {
       };
     }), { filter: "grayscale(0.5)", filterPriority: "important", pointer: "auto", pointerPriority: "important", inert: "native" });
     await page.close();
+  });
+  await check("Feedback stays in the feed and corrections update immediately across redraws", async () => {
+    const card = feed.locator("article").nth(2);
+    await card.evaluate((article) => {
+      window.__nativeCardClicks = 0;
+      article.addEventListener("click", () => window.__nativeCardClicks++);
+    });
+    await card.locator("summary").click();
+    await card.getByRole("combobox", { name: "Report category" }).click();
+    await feed.keyboard.press("Escape");
+    await card.getByRole("button", { name: "Incorrect", exact: true }).click();
+    await card.locator(".label").filter({ hasText: /^Your correction · shown/ }).waitFor();
+    assert.equal(await feed.evaluate(() => window.__nativeCardClicks), 0);
+    assert.equal(await card.locator('[inert]').count(), 0);
+    await card.evaluate((article) => {
+      article.innerHTML = window.renderPost(window.fixturePosts[2]).innerHTML;
+    });
+    await card.locator(".label").filter({ hasText: /^Your correction · shown/ }).waitFor();
   });
   await check(
     "slow model fails open after one second, late result does not hide read card",

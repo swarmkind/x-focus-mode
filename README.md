@@ -2,9 +2,9 @@
 
 **Your attention, your rules.** A small, open-source Chrome extension that adds personal filters and inspectable community warnings to X.
 
-> **Developer preview.** Automated browser tests use fictional feed data and a scripted model. Initial logged-in X testing found bugs fixed in v0.1.1; live verification of those fixes and the real-tweet demo remain pending. A real local model completed small synthetic evaluations, not an accuracy benchmark. Provider OAuth, 8 GB hardware and connectivity across separate networks remain release gates. There is no public Swarmkind relay or Chrome Web Store listing yet.
+> **Developer preview.** v0.1.2 was tested on the logged-in X home feed with local Ollama, including Reveal and correction. The real-tweet demo deliberately shows a model mistake. Automated tests use fictional feed data and a scripted model. Classifier quality, provider OAuth, 8 GB hardware and connectivity across separate networks remain release gates. There is no public Swarmkind relay or Chrome Web Store listing yet.
 
-![The real extension on fictional demo posts](docs/feed.png)
+[![Actual X footage: correcting a mistaken local-model label](docs/demo-preview.jpg)](https://github.com/swarmkind/x-focus-mode/releases/download/v0.1.2/x-focus-mode-0.1.2-demo.mp4)
 
 Built by [@swarmkind](https://x.com/swarmkind). Start with the [illustrated guides](assets/README.md) and [Quick start](docs/QUICKSTART.md).
 
@@ -78,7 +78,7 @@ npm run package
 npm run demo:capture
 ```
 
-The development capture needs the local relay running. Its fictional posts and scripted model never reach a public relay. The requested final preview will show real public tweets; live interaction footage is still pending an extension reload and retest. The current composition is a development reference, not the final video. Video source lives in `videos/x-focus-mode/`. See [test evidence](docs/TESTING.md), [model evaluation](docs/EVALUATION.md), [protocol](docs/PROTOCOL.md), [architecture](docs/ARCHITECTURE.md) and [store materials](docs/STORE.md).
+The development capture needs the local relay running. Its fictional posts and scripted model never reach a public relay. The [real-X demo and extension download](https://github.com/swarmkind/x-focus-mode/releases/tag/v0.1.2) use actual recorded interactions; the video shows a local model mistake and its correction. Video source lives in `videos/x-focus-mode/`. See [test evidence](docs/TESTING.md), [model evaluation](docs/EVALUATION.md), [protocol](docs/PROTOCOL.md), [architecture](docs/ARCHITECTURE.md) and [store materials](docs/STORE.md).
 
 ## Repository map
 
@@ -96,6 +96,6 @@ The development capture needs the local relay running. Its fictional posts and s
 
 MIT licensed. Modify it, redistribute it, self-host the relay or use another compatible network. Contributions that improve X compatibility, uncertainty calibration, accessibility and low-memory measurements are particularly useful. Submit synthetic fixtures instead of someone's private feed or credentials.
 
-No affiliation with X, OpenRouter, Ollama or Cloudflare. The MIT licence covers this project's code and original assets; third-party tools retain their own licences.
+No affiliation with X, OpenRouter, Ollama or Cloudflare. The MIT licence covers this project's code and original assets; third-party tools retain their own licences. Recorded X posts and third-party media remain their owners' content and are not relicensed under MIT.
 
 The settings include the author's requested [planned coffee link](https://buymeacoffee.com/swarmkind), visibly marked as coming soon because the username is not yet claimed. [Distribution notes](docs/DISTRIBUTION.md) list suitable feedback communities; no outreach has been sent.

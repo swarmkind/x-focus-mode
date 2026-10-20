@@ -1,14 +1,10 @@
-# Video source — development composition
+# X Focus Mode — real-X demo
 
-**Not the final preview.** The current recordings use fictional feed posts and a scripted model. The requested final video must replace them with real public X posts and recorded extension interactions. Live capture is pending access to an authorized dedicated window or supplied footage.
+60 seconds, 1920 × 1080, 30 fps, silent with visible captions and an SRT sidecar. Actual X-window footage demonstrates a local model mistake, Reveal and correction. The final timeline contains no fictional fixture clips. See [capture provenance](capture/live/README.md).
 
-The composition is 60 seconds, 1920×1080, silent with visible captions and an SRT sidecar. It includes actual extension recordings, settings and explicit provenance. No live model accuracy or organic community participation is implied.
+## Rebuild
 
-## Rebuild the development reference
-
-From the repository root, install dependencies, start the disposable local relay, and run `npm run demo:capture`. Capture requires Playwright Chromium, its FFmpeg encoder (`npx playwright install ffmpeg`) and system `ffmpeg`. It clears only the local emulator's report table.
-
-Then:
+From the repository root:
 
 ```sh
 cd videos/x-focus-mode
@@ -18,10 +14,9 @@ node demo/build-video.mjs
 cd videos/x-focus-mode
 npm run check
 npm run dev -- --background
+npm run render -- --quality delivery --fps 30 --output renders/x-focus-mode-0.1.2-demo.mp4
 ```
 
-The pinned renderer can produce a development reference with `npm run render -- --quality delivery --fps 30 --output renders/video.mp4`. Do not publish that fixture render as the requested live preview. Replace source clips, update captions/provenance, run the full check and inspect rendered frames before delivering the final video.
+Selected, cropped source clips are included; raw window captures remain local. `demo/capture.mjs` builds a separate fictional development fixture and is not needed to rebuild this final demo. Original scene graphics are MIT licensed; recorded posts and third-party media retain their owners' rights.
 
-`capture/cuts.json` records source provenance. `proof/contact-sheet.jpg` shows the development composition. Generated MP4s, temporary renderer files and dependency directories are excluded from Git.
-
-The animation library is a video authoring dependency only. See [third-party notices](../../THIRD-PARTY-NOTICES.md).
+The animation library is a video authoring dependency only. See [third-party notices](../../THIRD-PARTY-NOTICES.md). The local HyperFrames history is owned by an already-running app; the CLI refused to open a second history owner, so it was not overridden.

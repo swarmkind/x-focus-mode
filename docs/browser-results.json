@@ -1,5 +1,5 @@
 {
-  "date": "2026-10-20T08:45:12.389Z",
+  "date": "2026-10-20T11:26:50.064Z",
   "browser": "151.0.7922.34",
   "results": [
     {
@@ -10,12 +10,17 @@
     {
       "name": "real content script blurs, highlights, excludes own/protected posts",
       "passed": true,
-      "ms": 832
+      "ms": 818
     },
     {
       "name": "keyboard Reveal preserves focus and exposes labelled controls",
       "passed": true,
-      "ms": 23
+      "ms": 25
+    },
+    {
+      "name": "live-X flex row keeps warnings above full-width post content",
+      "passed": true,
+      "ms": 3
     },
     {
       "name": "Reveal latency",
@@ -29,37 +34,37 @@
     {
       "name": "same DOM card recycling preserves reveal and refreshes a changed tweet ID",
       "passed": true,
-      "ms": 59
+      "ms": 58
     },
     {
       "name": "30 repeated feed-card replacements keep one overlay per card",
       "passed": true,
-      "ms": 440
+      "ms": 444
     },
     {
       "name": "explicit feedback creates signed minimal human report",
       "passed": true,
-      "ms": 79
+      "ms": 57
     },
     {
       "name": "redraw preserves Reveal and community badge persists on detail",
       "passed": true,
-      "ms": 46
+      "ms": 50
     },
     {
       "name": "second installation receives warning with no model calls",
       "passed": true,
-      "ms": 842
+      "ms": 861
     },
     {
       "name": "offscreen peers establish native WebRTC and transfer reports",
       "passed": true,
-      "ms": 22
+      "ms": 21
     },
     {
       "name": "persistent peer byte budget refuses over-limit transfer",
       "passed": true,
-      "ms": 3
+      "ms": 2
     },
     {
       "name": "network off switch closes offscreen document immediately",
@@ -74,27 +79,32 @@
     {
       "name": "settings fit a 360px window and expose maker/support links",
       "passed": true,
-      "ms": 93
+      "ms": 84
     },
     {
       "name": "Reveal restores existing native styles and inert state",
       "passed": true,
-      "ms": 410
+      "ms": 172
+    },
+    {
+      "name": "Feedback stays in the feed and corrections update immediately across redraws",
+      "passed": true,
+      "ms": 96
     },
     {
       "name": "slow model fails open after one second, late result does not hide read card",
       "passed": true,
-      "ms": 2203
+      "ms": 2185
     },
     {
       "name": "API mode sends keys only to its selected provider and excludes unknown visibility",
       "passed": true,
-      "ms": 245
+      "ms": 214
     },
     {
       "name": "excluded routes stay untouched and SPA navigation activates the home adapter",
       "passed": true,
-      "ms": 165
+      "ms": 141
     },
     {
       "name": "Observed fixture main-thread tasks over 50 ms",

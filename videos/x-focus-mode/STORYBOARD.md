@@ -8,76 +8,58 @@ mode: autonomous
 ---
 
 ## Video direction
-Silent product demonstration using actual extension captures, fictional posts and scripted model outputs. Dark product palette, mint accent, generous margins and simple readable typography. Timed explanatory captions form one bottom rail. No simulated UI, invented metrics, voiceover, music, effects or provider-success claims. Clean cuts between distinct surfaces; smooth power3 entrance on titles only. Screens stay still so controls can be read. Persistent preview and demo-data labels. All six frames built inline serially under the workflow fallback; no delegation permission is assumed.
+Actual X-window recording and local Qwen3.5 assessments. A false positive is explicitly corrected. No fictional posts, simulated overlays, narration, music or other-app recordings in the final timeline. Existing dark/mint design and simple power3 entrance retained; hard cuts and normal-speed footage. Silent captions occupy the bottom rail. No new effects or animation dependencies.
 
 ## Frame 1 — Your attention
-- scene: A quieter feed, with the choice to reveal anything.
 - duration: 5s
 - poster: 3s
 - transition_in: cut
 - status: animated
 - src: compositions/frames/01-intro.html
-- asset_candidates: capture/assets/feed.png
-- assets: capture/assets/feed.png
 
-0–0.5s: product name and “Your attention, your rules.” enter with a restrained power3 settle. 1.5s: “A quieter feed. Still your choice.” appears. 3s: Open-source Chrome preview. No metric or accuracy promise.
+Original title card, mint accent, restrained power3 entrance. Open-source Chrome preview. No performance or accuracy claim.
 
-## Frame 2 — Reveal and confirm
-- scene: Actual blur, instant Reveal, then explicit Accurate feedback.
-- duration: 16s
-- poster: 5s
+## Frame 2 — Models can get it wrong
+- duration: 10s
+- poster: 3s
 - transition_in: cut
 - status: animated
 - src: compositions/frames/02-reveal.html
-- asset_candidates: capture/assets/feed.webm
-- assets: capture/assets/feed.webm
 
-0–3s: recorded filtered feed. Caption: “Let obvious bait wait.” 3–6s: real Reveal click; caption “Reveal instantly. No vote is inferred.” 6–9s: actual feedback panel. 9–16s: Accurate click and published human report confirmation. Capture is the source of truth; align captions to decoded click times. Side title “A filter you control.” No artificial cursor.
+Real local model false positive, then actual Reveal. Source live-correction.mp4 6–16 s at 1x. The caption discloses the mistaken local-model label and that Hide reapplied the blur. Reveal does not imply agreement.
 
-## Frame 3 — Another installation
-- scene: A second installation sees the signed community warning with text visible.
-- duration: 8s
+## Frame 3 — Correct it in place
+- duration: 18s
+- poster: 9s
+- transition_in: cut
+- status: animated
+- src: compositions/frames/03-correction.html
+
+Continue the same take, source 16–34 s at 1x. Actual Feedback and Incorrect clicks. Show corrected state; saved caption begins at scene time 13 s, after the recorded update.
+
+## Frame 4 — Choose your reviewer
+- duration: 9s
 - poster: 4s
 - transition_in: cut
 - status: animated
-- src: compositions/frames/03-community.html
-- asset_candidates: capture/assets/peer.webm
-- assets: capture/assets/peer.webm
-
-Actual recording stays readable. Side title “One report can help another reader.” At 3s, reveal the caveat: “Reports are claims. Community auto-blur starts off.” No claim of unique humans or remote-network connectivity.
-
-## Frame 4 — Choose a reviewer
-- scene: Real provider settings switch from API to existing local Ollama.
-- duration: 12s
-- poster: 7s
-- transition_in: cut
-- status: animated
 - src: compositions/frames/04-reviewer.html
-- asset_candidates: capture/assets/settings.webm
-- assets: capture/assets/settings.webm
 
-0–5s: actual API mode fields and OpenRouter button. Caption “Your provider account. Your credits.” 5–12s: actual Ollama mode. Caption “Or an existing local model. Community-only is available too.” No live login or model performance claim.
+Actual X home-feed scrolling, source live-scroll.mp4 0–9 s at 1x. Text explains API, existing local Ollama and community-only choices; no 8 GB claim.
 
-## Frame 5 — Independent choices
-- scene: Actual sharing/distribution controls and data disclosure.
-- duration: 11s
+## Frame 5 — Sharing is your choice
+- duration: 10s
 - poster: 5s
 - transition_in: cut
 - status: animated
 - src: compositions/frames/05-network.html
-- asset_candidates: capture/assets/network.png
-- assets: capture/assets/network.png
 
-Actual settings screenshot, unchanged. 0–4s: “Share flags.” 4–8s: “Help distribute reports.” 8–11s: “Two independent choices, after informed consent.” Caption notes peers can see IPs; public reports are not anonymous. No invented network diagram or throughput metric.
+Original illustrated data guide. Explain separate consent controls and that no public Swarmkind relay is deployed. No simulated organic community participation.
 
 ## Frame 6 — Make it yours
-- scene: Open-source preview and repository/install link.
 - duration: 8s
 - poster: 5s
 - transition_in: cut
 - status: animated
 - src: compositions/frames/06-source.html
-- asset_candidates: capture/assets/feed.png
-- assets: capture/assets/feed.png
 
-0–1s: “Make it yours.” 2s: “MIT licensed. Inspect it. Change it. Self-host it.” 4s: github.com/swarmkind/x-focus-mode. Footer: “Developer preview · Live X and model validation pending.” End fully readable at 60s.
+Original MIT/source title card, @swarmkind attribution, developer-preview caveat. Fully readable end frame.

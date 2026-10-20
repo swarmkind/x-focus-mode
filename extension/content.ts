@@ -37,6 +37,9 @@ type Card = {
   }[];
   manualHidden?: boolean;
   originalShadow: string;
+  originalDirection: string;
+  originalDirectionPriority: string;
+  feedbackStatus?: string;
   result?: Result;
 };
 const css = `:host{display:block!important;position:relative!important;font:13px/1.4 system-ui!important;color:#ddedeb!important;z-index:2}*{box-sizing:border-box} .bar{display:flex;align-items:center;flex-wrap:wrap;gap:7px;padding:9px 12px;background:#152a2c;border:1px solid #375557;border-radius:10px;margin:8px 0}button,select{font:inherit;color:inherit;background:#203b3e;border:1px solid #5b787a;border-radius:6px;padding:4px 8px;cursor:pointer}button:hover,button:focus-visible{background:#385b60;outline:2px solid #a4d7bd} .label{flex:1} .muted{color:#b1c4c7} .good{border-color:#a4d7bd} .pending{color:#c5d6d7} .feedback{display:flex;gap:6px;align-items:center;flex-wrap:wrap}details{width:100%}summary{cursor:pointer}small{display:block}`;
@@ -119,6 +122,7 @@ function render(card: Card, pending = false) {
   bar.tabIndex = -1;
   bar.setAttribute("role", "group");
   bar.setAttribute("aria-label", "X Focus Mode");
+  bar.addEventListener("click", (event) => event.stopPropagation());
   const label = document.createElement("span");
   label.className = "label";
   label.setAttribute("role", "status");
@@ -126,15 +130,15 @@ function render(card: Card, pending = false) {
     models = reports.filter((x) => x.source === "model").length;
   label.textContent = pending
     ? "Checking this post…"
-    : enabled.length
+    : r?.correction
+      ? "Your correction · shown"
+      : enabled.length
       ? enabled.map((c) => LABELS[c]).join(" · ")
       : r?.assessment?.relevant
         ? "Matches your interests"
         : r?.assessment?.confidence === "clear"
           ? "Reviewed · no filter applied"
-          : r?.correction
-            ? "Your correction · shown"
-            : r?.status || "Unreviewed";
+          : r?.status || "Unreviewed";
   if (human || models) {
     const count = document.createElement("small");
     count.textContent = `Community: ${human} human report${human === 1 ? "" : "s"}, ${models} model assessment${models === 1 ? "" : "s"} · unverified claims`;
@@ -182,10 +186,10 @@ function render(card: Card, pending = false) {
     }
     if (enabled[0]) select.value = enabled[0];
     const note = document.createElement("small");
-    note.textContent =
-      card.post.eligible && settings.share
+    note.textContent = card.feedbackStatus ||
+      (card.post.eligible && settings.share
         ? "Your confirmation may publish a signed human report."
-        : "Feedback stays on this device; sharing eligibility is not established.";
+        : "Feedback stays on this device; sharing eligibility is not established.");
     async function submit(accurate: boolean) {
       const response = await message({
         type: "feedback",
@@ -194,7 +198,8 @@ function render(card: Card, pending = false) {
         accurate,
       }).catch(() => ({ error: "Feedback could not be saved" }));
       note.textContent = response.error || response.status;
-      if (!accurate) {
+      card.feedbackStatus = note.textContent || undefined;
+      if (!accurate && !response.error) {
         card.revealed = true;
         card.manualHidden = false;
         revealed.add(card.post.id);
@@ -204,7 +209,9 @@ function render(card: Card, pending = false) {
           correction: true,
           assessment: undefined,
         };
-        setHidden(card, false);
+        answers.set(card.post.id, card.result);
+        render(card);
+        card.root.querySelector<HTMLElement>(".bar")?.focus({ preventScroll: true });
       }
     }
     feedback.append(
@@ -272,7 +279,11 @@ async function inspect(article: HTMLElement) {
     revealed: revealed.has(post.id),
     hidden: [],
     originalShadow: article.style.boxShadow,
+    originalDirection: article.style.getPropertyValue("flex-direction"),
+    originalDirectionPriority: article.style.getPropertyPriority("flex-direction"),
   };
+  // X's article is a flex row; the warning must sit above its native content.
+  article.style.setProperty("flex-direction", "column", "important");
   active.set(article, card);
   const cached = answers.get(post.id);
   if (cached) {
@@ -314,6 +325,7 @@ async function inspect(article: HTMLElement) {
 }
 function remove(card: Card) {
   card.article.style.boxShadow = card.originalShadow;
+  card.article.style.setProperty("flex-direction", card.originalDirection, card.originalDirectionPriority);
   clearTimeout(card.timer);
   setHidden(card, false);
   card.host.remove();

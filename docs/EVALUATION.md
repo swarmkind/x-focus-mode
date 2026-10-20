@@ -38,3 +38,7 @@ Use your exact installed model identifier. The harness counts expected labels on
 Raw reports: [before](evaluation/calibration-before.json), [after](evaluation/calibration-after.json), [challenge](evaluation/holdout.json). Dataset text is under `tests/`.
 
 The next useful evaluation is independently reviewed public material spanning news, satire, distress, disagreement, languages and incomplete media, plus actual low-memory hardware. Further tuning to these same examples would not establish reliability.
+
+## Live feed observation — 20 October 2026
+
+The same Qwen3.5:latest model produced false doomering labels on optimistic abundance posts and failed to flag an obvious engagement prompt. This was an uncontrolled feed inspection, not a labelled benchmark; no accuracy rate is inferred. One incorrect doomering label is shown and corrected in the real-X demo. The synthetic results above must not be read as evidence that the classifier is ready for automatic filtering at scale.

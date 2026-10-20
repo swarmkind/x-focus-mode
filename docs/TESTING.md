@@ -9,7 +9,7 @@ Developer preview, 20 October 2026. Test source is included so results can be re
 | TypeScript | Passed | Extension and Cloudflare relay configurations |
 | Unit and SQLite tests | 9 passed | Signed schema, tampering, expiry, revision ordering, model parser, unknown visibility, endpoint boundaries, atomic database updates and capacity |
 | Local relay integration | Passed | Real Worker/D1 emulator: submissions, rejected replay/tampering/private fields, withdrawals, incremental sync, peer capacity and rediscovery |
-| Installed Chrome extension | 18 scenarios passed | Two isolated Chrome profiles, actual unpacked content script, worker and offscreen page; fictional X-shaped feed and scripted model |
+| Installed Chrome extension | 20 scenarios passed | Two isolated Chrome profiles, actual unpacked content script, worker and offscreen page; fictional X-shaped feed and scripted model |
 | Native WebRTC | Passed locally | Second installation retrieved signed reports over a real data channel after its cache was cleared |
 | Distribution off switch | Passed | Offscreen document and its connections close immediately |
 | API boundary | Passed with mocked provider | Key goes only to the configured HTTPS provider; unknown visibility is excluded |
@@ -18,6 +18,7 @@ Developer preview, 20 October 2026. Test source is included so results can be re
 | Repeated DOM replacement | Passed | 30 alternating post replacements in one card; one overlay remains per card |
 | Native state restoration | Passed | Reveal restores pre-existing inline filter/pointer styles, priorities and inert attribute |
 | Narrow settings window | Passed | No horizontal overflow at 360 px; maker and planned coffee links present |
+| Live X interaction | Passed on this session | Actual home feed: warning above native content, scrolling, Hide/Reveal, Feedback stays in feed, Incorrect immediately updates label; sharing/distribution off |
 | Local Ollama inference | Executed | Qwen3.5:latest, 9.7B Q4_K_M, 64 GB M2 Max; see EVALUATION.md for failures and limits |
 
 [Machine-readable browser results](browser-results.json) include the exact Chrome version, timestamps and timings. The measured Reveal operation is an in-page interaction, not a claim about full input-to-display latency. The long-task observer covers the whole fixture page; it is not an extension-only CPU profile.
@@ -32,7 +33,7 @@ Browser tests clear **only the local D1 emulator's report table**. Use disposabl
 
 ## Unverified release gates
 
-- **Live X:** the authorized logged-in home feed was inspected. An unknown-visibility bug caused overlays to disappear; the metadata adapter now preserves unknown state rather than marking it restricted. The installed extension requires a manual reload before the fix can be verified in that browser. The tool blocks extension-management pages. Production scrolling, current public-visibility coverage and protected-content handling remain live verification gates. Fixture success does not establish live compatibility.
+- **Live X:** v0.1.2 was manually reloaded and tested on the authorized logged-in home feed. Live testing found and fixed flex-row layout, Feedback click propagation and delayed correction display. Current public-visibility coverage, protected-content handling and sustained workloads still need broader live validation. Unknown visibility cannot be shared or sent to a remote provider.
 - **Models:** real provider OAuth and real API responses remain unverified. Existing local Ollama completed 16 calibration and 12 fresh synthetic challenge cases. Real classification quality, confidence calibration and a minimum model size are not established; see [evaluation details](EVALUATION.md).
 - **Hardware:** tests ran on an Apple M2 Max with 64 GB RAM. No 8 GB machine, memory ceiling, sustained feed workload or battery measurement has been validated.
 - **Network:** cross-network NAT traversal, large-swarm topology and hostile peers. Local WebRTC success is a narrower result; HTTPS fallback remains necessary.
@@ -41,9 +42,11 @@ Browser tests clear **only the local D1 emulator's report table**. Use disposabl
 
 ## Demo provenance
 
-The included development composition records actual extension interactions on **fictional posts with scripted model responses**. Daniel requested real public tweets and authorized a logged-in X tab. A real feed still was captured locally, but successful live filter/Reveal footage is pending the corrected extension reload. No final real-tweet MP4 is delivered. The fixture composition is not that final video. Live testing has sharing/distribution disabled and does not publish demonstration flags.
+The final 60-second demo uses real X-window recordings from 20 October 2026. Native macOS capture targeted one dedicated Chrome window, with no audio input. Selected footage is cropped to X content; no desktop or other app appears. Captions identify the local model and explicitly show a mistaken doomering classification being corrected. These are actual extension interactions, not composited UI. The pending cover had already timed out; Hide reapplied the blur before recording. This is disclosed in the video and does not establish sub-second inference.
 
-The existing 60-second development composition passed HyperFrames 0.8.181 lint, runtime, layout and contrast checks after the renderer update. This validates the development composition's structure, not live footage or product accuracy.
+Live testing used Qwen3.5:latest through existing local Ollama, with sharing and distribution disabled. No demonstration reports were published. The classifier made conspicuous mistakes on ordinary posts; successful overlay mechanics do not establish useful classification quality. The video is a developer preview, not an accuracy or speed benchmark.
+
+The updated composition passed HyperFrames 0.8.181 lint, runtime, layout, motion and contrast checks. The delivered MP4 was probed as exactly 60 seconds, 1920 × 1080, 30 fps, one video stream and no audio stream. Decoded frames at 3, 8, 12, 24, 30, 37, 47 and 57 seconds were inspected; blur, Reveal, Feedback and corrected state are visible. The animation-map review flagged overlapping local scene clocks and reading holds; the assembled runtime and visual checks showed no visible collision. Development fixture captures remain separately labelled and are not used in the final timeline. Capture provenance is recorded in `videos/x-focus-mode/capture/live/README.md`.
 
 The three original 1080 × 1350 guides and 1200 × 630 cover were exported and visually checked. The export script also checks text bounds. These assets are outside the extension package and add no installed runtime weight.
 

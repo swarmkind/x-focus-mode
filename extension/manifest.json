@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "X Focus Mode",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A personal attention filter for X: instant reveal, your own AI, and optional signed community warnings.",
   "minimum_chrome_version": "120",
   "permissions": ["storage", "identity", "offscreen", "alarms"],

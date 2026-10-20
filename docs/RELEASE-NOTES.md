@@ -1,3 +1,19 @@
+# v0.1.2 — live X controls and real-tweet demo
+
+- Position warnings above X's flex-row post content, restoring the original direction on removal.
+- Keep Feedback and its controls from activating the underlying X post.
+- Apply successful Incorrect feedback immediately and preserve it across card redraws; failed saves do not pretend to correct the post.
+- Add regression coverage for actual X layout and Feedback click propagation/correction.
+- Pass TypeScript, nine unit/SQLite tests and 20 installed-extension browser scenarios.
+- Verify Hide, Reveal, Feedback and correction on the actual logged-in X home feed.
+- Include a silent 60-second demo using only recorded X-window footage and original title/guide graphics. A mistaken model label is explicitly identified and corrected.
+
+**Developer preview:** model quality remains unreliable. No public relay, Store listing, one-click model installer, 8 GB result or cross-network swarm guarantee. Real provider OAuth/API paths remain unverified; hosted CI still needs a credential with workflow permission. Live testing kept sharing/distribution off and published no reports.
+
+Update unpacked installations by replacing the files, clicking Reload on the extension card, then reloading X.
+
+---
+
 # v0.1.1 — live-test fixes and launch materials
 
 - Preserve unknown public visibility instead of treating it as restricted. Remote review/sharing still require affirmative eligibility.

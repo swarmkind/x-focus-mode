@@ -1,55 +1,43 @@
 1
 00:00:00,000 --> 00:00:05,000
-X Focus Mode · Open-source Chrome preview
+X Focus Mode · Open-source Chrome preview · @swarmkind
 
 2
-00:00:05,000 --> 00:00:08,000
-Let obvious bait wait.
+00:00:05,000 --> 00:00:09,000
+Mistaken local-model label · Blur reapplied with Hide
 
 3
-00:00:08,000 --> 00:00:11,000
-Reveal instantly. No vote is inferred.
+00:00:09,000 --> 00:00:15,000
+Reveal is immediate. It never counts as agreement.
 
 4
-00:00:11,000 --> 00:00:14,000
-Confirm a warning explicitly.
+00:00:15,000 --> 00:00:28,000
+The label is a model judgement. You can disagree.
 
 5
-00:00:14,000 --> 00:00:21,000
-Your confirmation becomes a signed human report.
+00:00:28,000 --> 00:00:33,000
+Correction saved locally. No public report was sent.
 
 6
-00:00:21,000 --> 00:00:24,000
-The warning remains visible alongside the post.
+00:00:33,000 --> 00:00:38,000
+Real feed footage. This session uses local Ollama.
 
 7
-00:00:24,000 --> 00:00:29,000
-Reports are claims. Community auto-blur starts off.
+00:00:38,000 --> 00:00:42,000
+Model accuracy and 8 GB performance are not established.
 
 8
-00:00:29,000 --> 00:00:34,000
-Your provider account. Your credits.
+00:00:42,000 --> 00:00:47,000
+Signed reports contain no post text or reveal history.
 
 9
-00:00:34,000 --> 00:00:41,000
-Local Ollama is optional. No model weights in the extension.
+00:00:47,000 --> 00:00:52,000
+Reports can be wrong. No public Swarmkind relay is live yet.
 
 10
-00:00:41,000 --> 00:00:45,000
-Sharing flags and distributing reports have separate controls.
+00:00:52,000 --> 00:00:56,000
+Built by @swarmkind · Forks and contributions welcome
 
 11
-00:00:45,000 --> 00:00:49,000
-Distribution can continue with X closed, while Chrome runs.
-
-12
-00:00:49,000 --> 00:00:52,000
-Public reports are not anonymous. Peers may see your IP.
-
-13
-00:00:52,000 --> 00:00:56,000
-Your attention deserves a considered choice.
-
-14
 00:00:56,000 --> 00:01:00,000
-Developer preview · Live X and model validation pending.
+Developer preview · Tested on live X · Expect model mistakes
