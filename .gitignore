@@ -1,0 +1,14 @@
+node_modules/
+dist/
+artifacts/
+.wrangler/
+.env*
+.dev.vars*
+*.local
+.DS_Store
+videos/**/.hyperframes/
+videos/**/.media/
+videos/**/renders/
+videos/**/.tmp/
+videos/**/.thumbnails/
+videos/**/.transcode-cache/

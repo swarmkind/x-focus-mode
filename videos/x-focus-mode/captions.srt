@@ -1,0 +1,55 @@
+1
+00:00:00,000 --> 00:00:05,000
+X Focus Mode · Open-source Chrome preview
+
+2
+00:00:05,000 --> 00:00:08,000
+Let obvious bait wait.
+
+3
+00:00:08,000 --> 00:00:11,000
+Reveal instantly. No vote is inferred.
+
+4
+00:00:11,000 --> 00:00:14,000
+Confirm a warning explicitly.
+
+5
+00:00:14,000 --> 00:00:21,000
+Your confirmation becomes a signed human report.
+
+6
+00:00:21,000 --> 00:00:24,000
+The warning remains visible alongside the post.
+
+7
+00:00:24,000 --> 00:00:29,000
+Reports are claims. Community auto-blur starts off.
+
+8
+00:00:29,000 --> 00:00:34,000
+Your provider account. Your credits.
+
+9
+00:00:34,000 --> 00:00:41,000
+Local Ollama is optional. No model weights in the extension.
+
+10
+00:00:41,000 --> 00:00:45,000
+Sharing flags and distributing reports have separate controls.
+
+11
+00:00:45,000 --> 00:00:49,000
+Distribution can continue with X closed, while Chrome runs.
+
+12
+00:00:49,000 --> 00:00:52,000
+Public reports are not anonymous. Peers may see your IP.
+
+13
+00:00:52,000 --> 00:00:56,000
+Your attention deserves a considered choice.
+
+14
+00:00:56,000 --> 00:01:00,000
+Developer preview · Live X and model validation pending.

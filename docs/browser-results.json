@@ -1,0 +1,91 @@
+{
+  "date": "2026-10-20T00:38:33.006Z",
+  "browser": "151.0.7922.34",
+  "results": [
+    {
+      "name": "onboarding defaults remain inactive until consent",
+      "passed": true,
+      "ms": 15
+    },
+    {
+      "name": "real content script blurs, highlights, excludes own/protected posts",
+      "passed": true,
+      "ms": 812
+    },
+    {
+      "name": "keyboard Reveal preserves focus and exposes labelled controls",
+      "passed": true,
+      "ms": 23
+    },
+    {
+      "name": "Reveal latency",
+      "ms": 0.09999990463256836
+    },
+    {
+      "name": "Reveal is instant and is not a human confirmation",
+      "passed": true,
+      "ms": 3
+    },
+    {
+      "name": "same DOM card recycling preserves reveal and refreshes a changed tweet ID",
+      "passed": true,
+      "ms": 56
+    },
+    {
+      "name": "explicit feedback creates signed minimal human report",
+      "passed": true,
+      "ms": 51
+    },
+    {
+      "name": "redraw preserves Reveal and community badge persists on detail",
+      "passed": true,
+      "ms": 41
+    },
+    {
+      "name": "second installation receives warning with no model calls",
+      "passed": true,
+      "ms": 861
+    },
+    {
+      "name": "offscreen peers establish native WebRTC and transfer reports",
+      "passed": true,
+      "ms": 22
+    },
+    {
+      "name": "persistent peer byte budget refuses over-limit transfer",
+      "passed": true,
+      "ms": 3
+    },
+    {
+      "name": "network off switch closes offscreen document immediately",
+      "passed": true,
+      "ms": 5
+    },
+    {
+      "name": "private content and preferences never reach relay",
+      "passed": true,
+      "ms": 0
+    },
+    {
+      "name": "slow model fails open after one second, late result does not hide read card",
+      "passed": true,
+      "ms": 2153
+    },
+    {
+      "name": "API mode sends keys only to its selected provider and excludes unknown visibility",
+      "passed": true,
+      "ms": 217
+    },
+    {
+      "name": "excluded routes stay untouched and SPA navigation activates the home adapter",
+      "passed": true,
+      "ms": 112
+    },
+    {
+      "name": "Observed fixture main-thread tasks over 50 ms",
+      "count": 0,
+      "maxMs": 0,
+      "attribution": "Whole page; not an extension-only profiler"
+    }
+  ]
+}

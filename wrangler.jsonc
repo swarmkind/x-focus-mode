@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "x-focus-mode-relay",
+  "main": "relay/worker.ts",
+  "compatibility_date": "2026-03-01",
+  "workers_dev": true,
+  "observability": { "enabled": false },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "x-focus-mode",
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "relay",
+    },
+  ],
+  "durable_objects": {
+    "bindings": [{ "name": "COORDINATOR", "class_name": "Coordinator" }],
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Coordinator"] }],
+  "triggers": { "crons": ["*/30 * * * *"] },
+}

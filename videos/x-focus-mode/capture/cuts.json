@@ -1,0 +1,17 @@
+{
+  "feed": {
+    "duration": 16,
+    "source": "actual isolated Chrome extension recording",
+    "model": "scripted local test fixture"
+  },
+  "peer": {
+    "duration": 8,
+    "source": "actual isolated Chrome extension recording",
+    "model": "scripted local test fixture"
+  },
+  "settings": {
+    "duration": 12,
+    "source": "actual isolated Chrome extension recording",
+    "model": "scripted local test fixture"
+  }
+}

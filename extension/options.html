@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>X Focus Mode — Your attention, your rules</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main>
+      <header>
+        <div class="mark" aria-hidden="true">◌</div>
+        <div>
+          <p class="eyebrow">SWARMKIND / OPEN SOURCE</p>
+          <h1>X Focus Mode<span>Your attention, your rules.</span></h1>
+        </div>
+        <span class="preview">PREVIEW 0.1</span>
+      </header>
+      <p class="intro">
+        A quieter feed. Your own AI. Community warnings you can inspect, reveal
+        and correct.
+      </p>
+      <form id="settings">
+        <section>
+          <div class="section-title">
+            <span>01</span>
+            <h2>Choose your reviewer</h2>
+          </div>
+          <label for="mode">Classification mode</label
+          ><select id="mode">
+            <option value="api">My AI provider</option>
+            <option value="ollama">Local Ollama model</option>
+            <option value="community">Community flags only</option>
+          </select>
+          <div id="provider-fields">
+            <div class="row">
+              <button type="button" id="oauth" class="accent">
+                Connect OpenRouter</button
+              ><span class="hint">Uses your provider account and credits.</span>
+            </div>
+            <label for="provider">API endpoint</label
+            ><input
+              id="provider"
+              type="url"
+              required
+              spellcheck="false"
+              autocomplete="off"
+            />
+            <div class="columns">
+              <div>
+                <label for="model">Model identifier</label
+                ><input
+                  id="model"
+                  maxlength="96"
+                  placeholder="Choose a model from your provider"
+                  spellcheck="false"
+                />
+              </div>
+              <div>
+                <label for="token"
+                  >API key
+                  <span class="hint">optional with sign-in / local</span></label
+                ><input
+                  id="token"
+                  type="password"
+                  autocomplete="off"
+                  placeholder="Stored only in this browser"
+                />
+              </div>
+            </div>
+            <p class="hint" id="connection">No provider connected.</p>
+            <button type="button" id="disconnect" class="quiet">
+              Remove saved provider keys
+            </button>
+            <p id="local-help" hidden>
+              Ollama must already be installed and running.
+              <a
+                href="https://github.com/swarmkind/x-focus-mode/blob/main/docs/OLLAMA.md"
+                target="_blank"
+                rel="noreferrer"
+                >Local model setup guide ↗</a
+              >
+            </p>
+          </div>
+          <label for="interests">What would you like to see?</label
+          ><textarea
+            id="interests"
+            rows="2"
+            maxlength="1000"
+            placeholder="For example: practical AI projects, gardening, thoughtful disagreement"
+          ></textarea>
+          <p class="hint">
+            Used for personal highlights. Never included in shared reports. Sent
+            to your chosen AI provider.
+          </p>
+        </section>
+        <section>
+          <div class="section-title">
+            <span>02</span>
+            <h2>Set your filters</h2>
+          </div>
+          <div id="categories" class="filters"></div>
+          <p class="hint">
+            Labels are judgements about content. “Suspected AI slop” does not
+            prove how a post was written. Ambiguous posts remain unreviewed.
+          </p>
+          <label class="check"
+            ><input id="communityBlur" type="checkbox" /><span
+              >Allow community reports to blur posts<small
+                >Off by default. Reports can be mistaken or coordinated;
+                signatures do not establish truth.</small
+              ></span
+            ></label
+          >
+        </section>
+        <section>
+          <div class="section-title">
+            <span>03</span>
+            <h2>A small part of the network</h2>
+          </div>
+          <label for="relay">Community relay</label
+          ><input
+            id="relay"
+            type="url"
+            placeholder="https://your-relay.workers.dev"
+            spellcheck="false"
+          />
+          <p class="hint">
+            Preview: enter your own compatible relay. No public Swarmkind relay
+            is deployed yet.
+          </p>
+          <label class="check"
+            ><input id="seed" type="checkbox" /><span
+              >Help distribute community reports<small
+                >While Chrome is running, including when X is closed. Up to 4
+                peers, 20 MB cached, 10 MB uploads and 10 MB background
+                downloads per day.</small
+              ></span
+            ></label
+          >
+          <label class="check"
+            ><input id="share" type="checkbox" /><span
+              >Share eligible feed flags<small
+                >Only posts whose public visibility and ownership can be
+                established. Never your own posts, protected posts, messages,
+                bookmarks or X block lists.</small
+              ></span
+            ></label
+          >
+          <div class="disclosure">
+            <h3>Before you switch it on</h3>
+            <p>
+              Your AI provider receives eligible post text and your interests.
+              Local mode sends them to Ollama on this computer. Community-only
+              mode makes no AI requests.
+            </p>
+            <p>
+              The relay and peers receive tweet IDs, category codes, human/model
+              source and model name, expiry, revision and your pseudonymous
+              public key and signature. The key links your contributions. No
+              tweet text, handles, interests, reveal history or API keys are
+              shared with the community network.
+            </p>
+            <p>
+              Peer connections expose your public IP and requested tweet IDs to
+              other peers. The relay can observe requests and IPs;
+              infrastructure security logs may exist. Distributed reports can be
+              copied and cannot be recalled. A signed withdrawal can supersede a
+              report, but old copies may remain.
+            </p>
+            <p>
+              Both network settings start checked. Nothing activates until you
+              accept below and save. You may turn either off independently at
+              any time.
+            </p>
+            <label class="check"
+              ><input id="consent" type="checkbox" /><span
+                >I understand these data flows and enable my selected
+                settings.</span
+              ></label
+            >
+          </div>
+        </section>
+        <footer>
+          <button class="primary" type="submit">Save settings</button
+          ><button type="button" id="clear" class="quiet">
+            Clear cached reports</button
+          ><output id="status" role="status" aria-live="polite"></output>
+        </footer>
+      </form>
+      <aside>
+        <span id="network-status">Network inactive</span
+        ><a
+          href="https://github.com/swarmkind/x-focus-mode"
+          target="_blank"
+          rel="noreferrer"
+          >Source & privacy ↗</a
+        >
+      </aside>
+    </main>
+    <script type="module" src="options.js"></script>
+  </body>
+</html>
