@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350" role="img" aria-labelledby="title desc">
+<title id="title">A label is a suggestion. You stay in control.</title><desc id="desc">Ragebait · Doomering · Engagement farming Suspected AI slop — never proof of authorship.</desc>
+<rect width="1080" height="1350" fill="#101b20"/>
+<g font-family="Arial, Helvetica, sans-serif">
+<g transform="translate(58 46) scale(1.1)"><path d="M25 15H15V25M39 15H49V25M49 39V49H39M25 49H15V39" fill="none" stroke="#b4dbc4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="32" r="6" fill="#b4dbc4"/></g><text x="145" y="91" fill="#b4dbc4" font-size="24" font-weight="700">X FOCUS MODE</text>
+<text x="826" y="91" fill="#a8bcb8" font-size="17" font-weight="400">GUIDE 02 / 03</text>
+<text x="72" y="202" fill="#e4eee9" font-size="66" font-weight="400">A label is a suggestion.</text><text x="72" y="297.7" fill="#e4eee9" font-size="66" font-weight="400">You stay in control.</text>
+<text x="76" y="340" fill="#a8bcb8" font-size="25" font-weight="400">Ragebait · Doomering · Engagement farming</text><text x="76" y="376.25" fill="#a8bcb8" font-size="25" font-weight="400">Suspected AI slop — never proof of authorship.</text>
+<rect x="76" y="428" width="928" height="158" rx="20" fill="#17282d" stroke="#36504f"/>
+  <circle cx="125" cy="475" r="22" fill="none" stroke="#b4dbc4"/>
+  <text x="125" y="482" text-anchor="middle" fill="#b4dbc4" font-size="18" font-weight="700">1</text>
+  <text x="166" y="483" fill="#e4eee9" font-size="30" font-weight="700">Reveal immediately</text>
+  <text x="166" y="524" fill="#a8bcb8" font-size="24" font-weight="400">Click Reveal to show the post. No model call is needed.</text><text x="166" y="558.8" fill="#a8bcb8" font-size="24" font-weight="400">Opening a post never counts as agreeing with a flag.</text><rect x="76" y="604" width="928" height="158" rx="20" fill="#17282d" stroke="#36504f"/>
+  <circle cx="125" cy="651" r="22" fill="none" stroke="#b4dbc4"/>
+  <text x="125" y="658" text-anchor="middle" fill="#b4dbc4" font-size="18" font-weight="700">2</text>
+  <text x="166" y="659" fill="#e4eee9" font-size="30" font-weight="700">Inspect the source</text>
+  <text x="166" y="700" fill="#a8bcb8" font-size="24" font-weight="400">Your AI and community reports have separate labels.</text><text x="166" y="734.8" fill="#a8bcb8" font-size="24" font-weight="400">Community warnings stay visible after you reveal.</text><rect x="76" y="780" width="928" height="158" rx="20" fill="#17282d" stroke="#36504f"/>
+  <circle cx="125" cy="827" r="22" fill="none" stroke="#b4dbc4"/>
+  <text x="125" y="834" text-anchor="middle" fill="#b4dbc4" font-size="18" font-weight="700">3</text>
+  <text x="166" y="835" fill="#e4eee9" font-size="30" font-weight="700">Give explicit feedback</text>
+  <text x="166" y="876" fill="#a8bcb8" font-size="24" font-weight="400">Use Accurate only when you agree with the category.</text><text x="166" y="910.8" fill="#a8bcb8" font-size="24" font-weight="400">Sharing applies only to eligible public feed posts.</text><rect x="76" y="956" width="928" height="158" rx="20" fill="#17282d" stroke="#36504f"/>
+  <circle cx="125" cy="1003" r="22" fill="none" stroke="#b4dbc4"/>
+  <text x="125" y="1010" text-anchor="middle" fill="#b4dbc4" font-size="18" font-weight="700">4</text>
+  <text x="166" y="1011" fill="#e4eee9" font-size="30" font-weight="700">Make it your feed</text>
+  <text x="166" y="1052" fill="#a8bcb8" font-size="24" font-weight="400">Choose Colour for a gentler cue, or Ignore a category.</text><text x="166" y="1086.8" fill="#a8bcb8" font-size="24" font-weight="400">Community auto-blur starts off. You can enable it.</text><text x="76" y="1160" fill="#e4eee9" font-size="22" font-weight="400">Models and people make mistakes. Missing context stays unreviewed.</text>
+<path d="M76 1210H1004" stroke="#36504f"/>
+<text x="76" y="1256" fill="#b4dbc4" font-size="25" font-weight="700">@swarmkind</text>
+<text x="1004" y="1256" text-anchor="end" fill="#a8bcb8" font-size="17" font-weight="400">OPEN SOURCE · DEVELOPER PREVIEW</text>
+<text x="76" y="1294" fill="#a8bcb8" font-size="20" font-weight="400">github.com/swarmkind/x-focus-mode</text>
+</g></svg>

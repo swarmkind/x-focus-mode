@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350" role="img" aria-labelledby="title desc">
+<title id="title">Make room for a quieter feed.</title><desc id="desc">Install the preview. Choose your reviewer. Decide what deserves your attention.</desc>
+<rect width="1080" height="1350" fill="#101b20"/>
+<g font-family="Arial, Helvetica, sans-serif">
+<g transform="translate(58 46) scale(1.1)"><path d="M25 15H15V25M39 15H49V25M49 39V49H39M25 49H15V39" fill="none" stroke="#b4dbc4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="32" r="6" fill="#b4dbc4"/></g><text x="145" y="91" fill="#b4dbc4" font-size="24" font-weight="700">X FOCUS MODE</text>
+<text x="826" y="91" fill="#a8bcb8" font-size="17" font-weight="400">GUIDE 01 / 03</text>
+<text x="72" y="202" fill="#e4eee9" font-size="66" font-weight="400">Make room for</text><text x="72" y="297.7" fill="#e4eee9" font-size="66" font-weight="400">a quieter feed.</text>
+<text x="76" y="340" fill="#a8bcb8" font-size="25" font-weight="400">Install the preview. Choose your reviewer.</text><text x="76" y="376.25" fill="#a8bcb8" font-size="25" font-weight="400">Decide what deserves your attention.</text>
+<rect x="76" y="428" width="928" height="158" rx="20" fill="#17282d" stroke="#36504f"/>
+  <circle cx="125" cy="475" r="22" fill="none" stroke="#b4dbc4"/>
+  <text x="125" y="482" text-anchor="middle" fill="#b4dbc4" font-size="18" font-weight="700">1</text>
+  <text x="166" y="483" fill="#e4eee9" font-size="30" font-weight="700">Load the extension</text>
+  <text x="166" y="524" fill="#a8bcb8" font-size="24" font-weight="400">Download and extract the release ZIP.</text><text x="166" y="558.8" fill="#a8bcb8" font-size="24" font-weight="400">Chrome extensions → Developer mode → Load unpacked.</text><rect x="76" y="604" width="928" height="158" rx="20" fill="#17282d" stroke="#36504f"/>
+  <circle cx="125" cy="651" r="22" fill="none" stroke="#b4dbc4"/>
+  <text x="125" y="658" text-anchor="middle" fill="#b4dbc4" font-size="18" font-weight="700">2</text>
+  <text x="166" y="659" fill="#e4eee9" font-size="30" font-weight="700">Choose a reviewer</text>
+  <text x="166" y="700" fill="#a8bcb8" font-size="24" font-weight="400">Connect OpenRouter / an API key, use existing Ollama,</text><text x="166" y="734.8" fill="#a8bcb8" font-size="24" font-weight="400">or choose community-only with a compatible relay.</text><rect x="76" y="780" width="928" height="158" rx="20" fill="#17282d" stroke="#36504f"/>
+  <circle cx="125" cy="827" r="22" fill="none" stroke="#b4dbc4"/>
+  <text x="125" y="834" text-anchor="middle" fill="#b4dbc4" font-size="18" font-weight="700">3</text>
+  <text x="166" y="835" fill="#e4eee9" font-size="30" font-weight="700">Set your filters</text>
+  <text x="166" y="876" fill="#a8bcb8" font-size="24" font-weight="400">Blur, colour or ignore each category.</text><text x="166" y="910.8" fill="#a8bcb8" font-size="24" font-weight="400">Add interests for personal highlights.</text><rect x="76" y="956" width="928" height="158" rx="20" fill="#17282d" stroke="#36504f"/>
+  <circle cx="125" cy="1003" r="22" fill="none" stroke="#b4dbc4"/>
+  <text x="125" y="1010" text-anchor="middle" fill="#b4dbc4" font-size="18" font-weight="700">4</text>
+  <text x="166" y="1011" fill="#e4eee9" font-size="30" font-weight="700">Review, save, reload X</text>
+  <text x="166" y="1052" fill="#a8bcb8" font-size="24" font-weight="400">Read the disclosure. Choose sharing and distribution.</text><text x="166" y="1086.8" fill="#a8bcb8" font-size="24" font-weight="400">Accept, save, then reload your X home feed.</text><text x="76" y="1160" fill="#e4eee9" font-size="22" font-weight="400">API credits cost money. No public Swarmkind relay is live yet.</text>
+<path d="M76 1210H1004" stroke="#36504f"/>
+<text x="76" y="1256" fill="#b4dbc4" font-size="25" font-weight="700">@swarmkind</text>
+<text x="1004" y="1256" text-anchor="end" fill="#a8bcb8" font-size="17" font-weight="400">OPEN SOURCE · DEVELOPER PREVIEW</text>
+<text x="76" y="1294" fill="#a8bcb8" font-size="20" font-weight="400">github.com/swarmkind/x-focus-mode</text>
+</g></svg>

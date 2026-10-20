@@ -1,0 +1,17 @@
+{
+  "provenance": "Machine-authored synthetic challenge cases created after prompt version 2 was frozen. Labels are subjective, not independently reviewed; this is a diagnostic holdout, not a representative X benchmark.",
+  "cases": [
+    {"id":"101","text":"The company closed today. I am scared about paying rent and would appreciate advice from anyone who has been through this.","categories":[],"abstain":false},
+    {"id":"102","text":"Reply AUTOMATE and repost to unlock my exclusive spreadsheet. No reply, no access.","categories":["engagement_farming"],"abstain":false},
+    {"id":"103","text":"The report projects more flood damage if emissions keep rising. It also lists drainage upgrades and early warnings that reduce the losses.","categories":[],"abstain":false},
+    {"id":"104","text":"People who use that editor are brainless losers. Come argue in my replies so I can make an example of you.","categories":["ragebait","engagement_farming"],"abstain":false},
+    {"id":"105","text":"Nothing anywhere will ever improve. Every attempt to help is pointless and humanity has no possible future.","categories":["doomering"],"abstain":false},
+    {"id":"106","text":"We need volunteers at the food bank on Saturday. Please share this with neighbours who might be able to help.","categories":[],"abstain":false},
+    {"id":"107","text":"New benchmark: 220 tokens per second with a batch of four. The repository includes the prompt, hardware details and raw timings.","categories":[],"abstain":false},
+    {"id":"108","text":"Great, my printer has achieved sentience and its first demand is more cyan.","categories":[],"abstain":false},
+    {"id":"109","text":"The phrase ‘everything is doomed’ makes a catchy headline. The data show uneven progress and several reasons to keep working.","categories":[],"abstain":false},
+    {"id":"110","text":"Small steps. Big dreams. Build the life you imagine, one sunrise at a time.","categories":[],"abstain":true},
+    {"id":"111","text":"What changed your mind about remote work? I am collecting experiences for a team discussion.","categories":[],"abstain":false},
+    {"id":"112","text":"This proves who was right. Watch to the end.","contextIncomplete":true,"categories":[],"abstain":true}
+  ]
+}

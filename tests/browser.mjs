@@ -103,6 +103,8 @@ try {
       await second
         .getByText("Matches your interests", { exact: true })
         .waitFor();
+      assert.ok(fixture.modelCalls.length > 0);
+      assert.ok(fixture.modelCalls.every((call) => call.think === false));
       assert.equal(
         await feed
           .locator('article[data-id="1000000000000000006"] [data-xfm]')
@@ -181,6 +183,17 @@ try {
       await first.getByRole("button", { name: "Hide", exact: true }).waitFor();
     },
   );
+  await check("30 repeated feed-card replacements keep one overlay per card", async () => {
+    for (let i = 0; i < 30; i++) {
+      await first.evaluate((article, index) => {
+        article.innerHTML = window.renderPost(window.fixturePosts[index]).innerHTML;
+      }, i % 2 ? 0 : 2);
+      await first.locator(".label").filter({
+        hasText: i % 2 ? "Engagement farming" : "Doomering",
+      }).waitFor();
+      assert.equal(await first.locator("[data-xfm]").count(), 1);
+    }
+  });
   await check(
     "explicit feedback creates signed minimal human report",
     async () => {
@@ -356,6 +369,42 @@ try {
   await feed.screenshot({ path: "artifacts/store-feed.png" });
   await a.options.setViewportSize({ width: 1280, height: 800 });
   await a.options.screenshot({ path: "artifacts/store-settings.png" });
+  await check("settings fit a 360px window and expose maker/support links", async () => {
+    await a.options.setViewportSize({ width: 360, height: 800 });
+    assert.equal(await a.options.evaluate(() =>
+      document.documentElement.scrollWidth <= innerWidth), true);
+    assert.equal(await a.options.locator(".coffee").getAttribute("href"),
+      "https://buymeacoffee.com/swarmkind");
+    assert.ok(await a.options.getByText("@swarmkind", { exact: true }).count());
+    await a.options.screenshot({ path: "artifacts/settings-mobile.png", fullPage: true });
+    await a.options.setViewportSize({ width: 1280, height: 800 });
+  });
+  await check("Reveal restores existing native styles and inert state", async () => {
+    const page = await a.context.newPage();
+    await page.addInitScript(() => {
+      document.addEventListener("DOMContentLoaded", () => {
+        const child = document.querySelector("article > div");
+        child.style.setProperty("filter", "grayscale(0.5)", "important");
+        child.style.setProperty("pointer-events", "auto", "important");
+        child.setAttribute("inert", "native");
+      });
+    });
+    await page.goto("http://127.0.0.1:4173/home");
+    const card = page.locator("article").first();
+    await card.locator(".label").filter({ hasText: "Engagement farming" }).waitFor();
+    await card.getByRole("button", { name: "Reveal", exact: true }).click();
+    assert.deepEqual(await card.evaluate((article) => {
+      const child = [...article.children].find((c) => !c.hasAttribute("data-xfm"));
+      return {
+        filter: child.style.filter,
+        filterPriority: child.style.getPropertyPriority("filter"),
+        pointer: child.style.pointerEvents,
+        pointerPriority: child.style.getPropertyPriority("pointer-events"),
+        inert: child.getAttribute("inert"),
+      };
+    }), { filter: "grayscale(0.5)", filterPriority: "important", pointer: "auto", pointerPriority: "important", inert: "native" });
+    await page.close();
+  });
   await check(
     "slow model fails open after one second, late result does not hide read card",
     async () => {

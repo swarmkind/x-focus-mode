@@ -427,6 +427,7 @@ async function drain() {
               model: s.model,
               messages,
               stream: false,
+              think: false,
               format: "json",
               options: { temperature: 0, num_ctx: 4096, num_predict: 700 },
             }

@@ -27,7 +27,14 @@ type Card = {
   timer?: ReturnType<typeof setTimeout>;
   timedOut: boolean;
   revealed: boolean;
-  hidden: HTMLElement[];
+  hidden: {
+    element: HTMLElement;
+    filter: string;
+    filterPriority: string;
+    pointerEvents: string;
+    pointerPriority: string;
+    inert: string | null;
+  }[];
   manualHidden?: boolean;
   originalShadow: string;
   result?: Result;
@@ -42,16 +49,24 @@ function visible(el: HTMLElement) {
 }
 function setHidden(card: Card, hidden: boolean) {
   for (const child of card.hidden) {
-    child.style.removeProperty("filter");
-    child.style.removeProperty("pointer-events");
-    child.removeAttribute("inert");
+    child.element.style.setProperty("filter", child.filter, child.filterPriority);
+    child.element.style.setProperty("pointer-events", child.pointerEvents, child.pointerPriority);
+    if (child.inert === null) child.element.removeAttribute("inert");
+    else child.element.setAttribute("inert", child.inert);
   }
   card.hidden = [];
   if (!hidden) return;
   // Keep the extension controls outside the inaccessible/blurred native subtree.
   for (const child of card.article.children)
     if (child !== card.host && child instanceof HTMLElement) {
-      card.hidden.push(child);
+      card.hidden.push({
+        element: child,
+        filter: child.style.getPropertyValue("filter"),
+        filterPriority: child.style.getPropertyPriority("filter"),
+        pointerEvents: child.style.getPropertyValue("pointer-events"),
+        pointerPriority: child.style.getPropertyPriority("pointer-events"),
+        inert: child.getAttribute("inert"),
+      });
       child.style.filter = "blur(9px)";
       child.style.pointerEvents = "none";
       child.setAttribute("inert", "");
@@ -89,7 +104,7 @@ function render(card: Card, pending = false) {
     ? "inset 3px 0 #b6a16e"
     : r?.assessment?.relevant
       ? "inset 3px 0 #a4d7bd"
-      : "";
+      : card.originalShadow;
   const shouldHide =
     (pending || blur || !!card.manualHidden) &&
     !card.revealed &&
@@ -235,7 +250,7 @@ async function inspect(article: HTMLElement) {
       old.post = post;
       if (
         old.hidden.length &&
-        (old.hidden.some((el) => el.parentElement !== article) ||
+        (old.hidden.some(({ element }) => element.parentElement !== article) ||
           article.children.length !== old.hidden.length + 1)
       )
         render(old);

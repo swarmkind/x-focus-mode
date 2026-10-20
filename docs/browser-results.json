@@ -1,16 +1,16 @@
 {
-  "date": "2026-10-20T00:38:33.006Z",
+  "date": "2026-10-20T08:45:12.389Z",
   "browser": "151.0.7922.34",
   "results": [
     {
       "name": "onboarding defaults remain inactive until consent",
       "passed": true,
-      "ms": 15
+      "ms": 24
     },
     {
       "name": "real content script blurs, highlights, excludes own/protected posts",
       "passed": true,
-      "ms": 812
+      "ms": 832
     },
     {
       "name": "keyboard Reveal preserves focus and exposes labelled controls",
@@ -19,7 +19,7 @@
     },
     {
       "name": "Reveal latency",
-      "ms": 0.09999990463256836
+      "ms": 0.20000004768371582
     },
     {
       "name": "Reveal is instant and is not a human confirmation",
@@ -29,22 +29,27 @@
     {
       "name": "same DOM card recycling preserves reveal and refreshes a changed tweet ID",
       "passed": true,
-      "ms": 56
+      "ms": 59
+    },
+    {
+      "name": "30 repeated feed-card replacements keep one overlay per card",
+      "passed": true,
+      "ms": 440
     },
     {
       "name": "explicit feedback creates signed minimal human report",
       "passed": true,
-      "ms": 51
+      "ms": 79
     },
     {
       "name": "redraw preserves Reveal and community badge persists on detail",
       "passed": true,
-      "ms": 41
+      "ms": 46
     },
     {
       "name": "second installation receives warning with no model calls",
       "passed": true,
-      "ms": 861
+      "ms": 842
     },
     {
       "name": "offscreen peers establish native WebRTC and transfer reports",
@@ -67,19 +72,29 @@
       "ms": 0
     },
     {
+      "name": "settings fit a 360px window and expose maker/support links",
+      "passed": true,
+      "ms": 93
+    },
+    {
+      "name": "Reveal restores existing native styles and inert state",
+      "passed": true,
+      "ms": 410
+    },
+    {
       "name": "slow model fails open after one second, late result does not hide read card",
       "passed": true,
-      "ms": 2153
+      "ms": 2203
     },
     {
       "name": "API mode sends keys only to its selected provider and excludes unknown visibility",
       "passed": true,
-      "ms": 217
+      "ms": 245
     },
     {
       "name": "excluded routes stay untouched and SPA navigation activates the home adapter",
       "passed": true,
-      "ms": 112
+      "ms": 165
     },
     {
       "name": "Observed fixture main-thread tasks over 50 ms",

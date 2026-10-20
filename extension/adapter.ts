@@ -4,6 +4,14 @@ export interface FeedPost extends Post {
   eligible: boolean;
 }
 export type Metadata = { author: string; public: boolean };
+export function publicVisibility(
+  protectedValue: unknown,
+  restricted: boolean,
+): boolean | undefined {
+  if (restricted || protectedValue === true) return false;
+  if (protectedValue === false) return true;
+  return undefined;
+}
 export function route(path: string): "feed" | "detail" | "excluded" {
   if (path === "/home") return "feed";
   if (/^\/[A-Za-z0-9_]{1,15}\/status\/\d+$/.test(path)) return "detail";

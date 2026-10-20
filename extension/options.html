@@ -9,17 +9,27 @@
   <body>
     <main>
       <header>
-        <div class="mark" aria-hidden="true">◌</div>
+        <img class="mark" src="mark.svg" width="64" height="64" alt="" />
         <div>
-          <p class="eyebrow">SWARMKIND / OPEN SOURCE</p>
+          <p class="eyebrow">
+            <a href="https://x.com/swarmkind" target="_blank" rel="noreferrer"
+              >@SWARMKIND</a
+            >
+            / OPEN SOURCE
+          </p>
           <h1>X Focus Mode<span>Your attention, your rules.</span></h1>
         </div>
-        <span class="preview">PREVIEW 0.1</span>
+        <span class="preview"><i></i> DEVELOPER PREVIEW</span>
       </header>
       <p class="intro">
         A quieter feed. Your own AI. Community warnings you can inspect, reveal
         and correct.
       </p>
+      <div class="quick-start" aria-label="Setup in three steps">
+        <span><b>01</b> Choose a reviewer</span
+        ><span><b>02</b> Set your filters</span
+        ><span><b>03</b> Review &amp; enable</span>
+      </div>
       <form id="settings">
         <section>
           <div class="section-title">
@@ -33,7 +43,7 @@
             <option value="community">Community flags only</option>
           </select>
           <div id="provider-fields">
-            <div class="row">
+            <div class="row" id="oauth-row">
               <button type="button" id="oauth" class="accent">
                 Connect OpenRouter</button
               ><span class="hint">Uses your provider account and credits.</span>
@@ -197,6 +207,32 @@
           >Source & privacy ↗</a
         >
       </aside>
+      <div class="maker">
+        <div>
+          <strong
+            >Built by
+            <a href="https://x.com/swarmkind" target="_blank" rel="noreferrer"
+              >@swarmkind</a
+            ></strong
+          >
+          <p>Free to use. Open to change. Yours to inspect.</p>
+        </div>
+        <a
+          class="coffee"
+          href="https://buymeacoffee.com/swarmkind"
+          target="_blank"
+          rel="noreferrer"
+          title="Planned Swarmkind support page; username not yet claimed"
+          ><svg aria-hidden="true" viewBox="0 0 24 24">
+            <path
+              d="M5 8h12v7a5 5 0 0 1-5 5h-2a5 5 0 0 1-5-5V8Zm12 1h1a3 3 0 0 1 0 6h-1M8 3v2m4-2v2"
+            /></svg
+          >Buy me a coffee ↗</a
+        >
+      </div>
+      <p class="support-note">
+        Support page coming soon. The planned username is not yet claimed.
+      </p>
     </main>
     <script type="module" src="options.js"></script>
   </body>

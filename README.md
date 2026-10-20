@@ -2,9 +2,11 @@
 
 **Your attention, your rules.** A small, open-source Chrome extension that adds personal filters and inspectable community warnings to X.
 
-> **Developer preview.** Browser tests use fictional feed data and a scripted model. Live X compatibility, real model accuracy, provider OAuth, 8 GB hardware and connectivity across separate networks remain release gates. There is no public Swarmkind relay or Chrome Web Store listing yet.
+> **Developer preview.** Automated browser tests use fictional feed data and a scripted model. Initial logged-in X testing found bugs fixed in v0.1.1; live verification of those fixes and the real-tweet demo remain pending. A real local model completed small synthetic evaluations, not an accuracy benchmark. Provider OAuth, 8 GB hardware and connectivity across separate networks remain release gates. There is no public Swarmkind relay or Chrome Web Store listing yet.
 
 ![The real extension on fictional demo posts](docs/feed.png)
+
+Built by [@swarmkind](https://x.com/swarmkind). Start with the [illustrated guides](assets/README.md) and [Quick start](docs/QUICKSTART.md).
 
 ## What it does
 
@@ -22,6 +24,8 @@
 3. Open the extension's settings. Choose a reviewer, model and category actions.
 4. For community features, enter a compatible relay you run or trust. The preview does not silently connect to a public relay.
 5. Read the data disclosure, select sharing/distribution independently, accept it, and save. Reload X after installing.
+
+**Updating an unpacked copy:** replace its files, click **Reload** on its card in `chrome://extensions`, then reload X. Reloading the X tab alone can leave the old extension scripts installed.
 
 API credits are paid to your chosen provider. An API key is not a consumer chat subscription. OpenRouter sign-in creates a provider key through OAuth PKCE. Local mode needs an existing Ollama installation: [setup guide](docs/OLLAMA.md).
 
@@ -74,7 +78,7 @@ npm run package
 npm run demo:capture
 ```
 
-The development capture needs the local relay running. Its fictional posts and scripted model never reach a public relay. The requested final preview will show real public tweets; live footage is still pending. The current composition is a development reference, not the final video. Video source lives in `videos/x-focus-mode/`. See [test evidence](docs/TESTING.md), [protocol](docs/PROTOCOL.md), [architecture](docs/ARCHITECTURE.md) and [store materials](docs/STORE.md).
+The development capture needs the local relay running. Its fictional posts and scripted model never reach a public relay. The requested final preview will show real public tweets; live interaction footage is still pending an extension reload and retest. The current composition is a development reference, not the final video. Video source lives in `videos/x-focus-mode/`. See [test evidence](docs/TESTING.md), [model evaluation](docs/EVALUATION.md), [protocol](docs/PROTOCOL.md), [architecture](docs/ARCHITECTURE.md) and [store materials](docs/STORE.md).
 
 ## Repository map
 
@@ -86,9 +90,12 @@ The development capture needs the local relay running. Its fictional posts and s
 | `tests/` | Protocol/SQLite tests, local relay integration, real Chrome fixtures |
 | `demo/`, `videos/` | Actual extension recordings and reproducible demo composition |
 | `docs/` | Privacy, protocol, deployment, testing and release materials |
+| `assets/` | Original logo, editable infographics and shareable PNGs |
 
 ## Contribute or fork
 
 MIT licensed. Modify it, redistribute it, self-host the relay or use another compatible network. Contributions that improve X compatibility, uncertainty calibration, accessibility and low-memory measurements are particularly useful. Submit synthetic fixtures instead of someone's private feed or credentials.
 
 No affiliation with X, OpenRouter, Ollama or Cloudflare. The MIT licence covers this project's code and original assets; third-party tools retain their own licences.
+
+The settings include the author's requested [planned coffee link](https://buymeacoffee.com/swarmkind), visibly marked as coming soon because the username is not yet claimed. [Distribution notes](docs/DISTRIBUTION.md) list suitable feedback communities; no outreach has been sent.

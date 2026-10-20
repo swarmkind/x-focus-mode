@@ -26,6 +26,7 @@ for (const entry of [
   });
 for (const file of ["options.html", "options.css", "offscreen.html"])
   await cp(`extension/${file}`, `${dest}/${file}`);
+await cp("assets/brand/mark.svg", `${dest}/mark.svg`);
 const manifest = JSON.parse(await readFile("extension/manifest.json", "utf8"));
 if (test) {
   manifest.host_permissions.push(
@@ -56,14 +57,46 @@ function chunk(type, data) {
   crc.writeUInt32BE(crc32(Buffer.concat([t, data])));
   return Buffer.concat([len, t, data, crc]);
 }
+const segments = [
+  [25, 15, 15, 15],
+  [15, 15, 15, 25],
+  [39, 15, 49, 15],
+  [49, 15, 49, 25],
+  [49, 39, 49, 49],
+  [49, 49, 39, 49],
+  [25, 49, 15, 49],
+  [15, 49, 15, 39],
+];
+function lineDistance(x, y, [ax, ay, bx, by]) {
+  const t = Math.max(
+    0,
+    Math.min(
+      1,
+      ((x - ax) * (bx - ax) + (y - ay) * (by - ay)) /
+        ((bx - ax) ** 2 + (by - ay) ** 2),
+    ),
+  );
+  return Math.hypot(x - ax - t * (bx - ax), y - ay - t * (by - ay));
+}
 for (const size of [16, 48, 128]) {
   const pixels = Buffer.alloc((size * 4 + 1) * size);
   for (let y = 0; y < size; y++)
     for (let x = 0; x < size; x++) {
       const i = y * (size * 4 + 1) + 1 + x * 4,
-        d = Math.hypot(x - size / 2, y - size / 2),
-        ring = d > size * 0.24 && d < size * 0.33;
-      pixels.set(ring ? [180, 219, 196, 255] : [16, 27, 32, 255], i);
+        px = ((x + 0.5) * 64) / size,
+        py = ((y + 0.5) * 64) / size,
+        mark =
+          Math.hypot(px - 32, py - 32) <= 6 ||
+          segments.some((s) => lineDistance(px, py, s) <= 2),
+        corner =
+          Math.hypot(
+            Math.max(15 - px, px - 49, 0),
+            Math.max(15 - py, py - 49, 0),
+          ) > 15;
+      pixels.set(
+        mark ? [180, 219, 196, 255] : [16, 27, 32, corner ? 0 : 255],
+        i,
+      );
     }
   const header = Buffer.alloc(13);
   header.writeUInt32BE(size);

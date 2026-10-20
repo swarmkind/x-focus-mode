@@ -1,4 +1,5 @@
 export {};
+import { publicVisibility } from "./adapter.ts";
 let enabled = false;
 window.addEventListener("message", (event) => {
   if (
@@ -37,17 +38,20 @@ function inspect(text: string) {
       item.restricted || r.__typename === "TweetWithVisibilityResults";
     if (r.__typename === "Tweet" && /^\d{1,20}$/.test(r.rest_id || "")) {
       const u = r.core?.user_results?.result;
-      const publicPost =
-        !restricted &&
-        u?.legacy?.protected === false &&
-        !r.limitedActionResults &&
-        !r.trusted_friends_info &&
-        !r.community_results;
-      posts.push({
-        id: r.rest_id,
-        author: u?.legacy?.screen_name || u?.core?.screen_name || "",
-        public: publicPost,
-      });
+      const publicPost = publicVisibility(
+        u?.legacy?.protected,
+        restricted ||
+          !!r.limitedActionResults ||
+          !!r.trusted_friends_info ||
+          !!r.community_results,
+      );
+      // Unknown visibility stays local; it must not masquerade as a protected post.
+      if (publicPost !== undefined)
+        posts.push({
+          id: r.rest_id,
+          author: u?.legacy?.screen_name || u?.core?.screen_name || "",
+          public: publicPost,
+        });
     }
     for (const child of Object.values(r))
       if (child && typeof child === "object")

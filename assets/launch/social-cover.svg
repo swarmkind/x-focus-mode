@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="X Focus Mode, your attention, your rules">
+<rect width="1200" height="630" fill="#101b20"/>
+<g font-family="Arial, Helvetica, sans-serif">
+<g transform="translate(68 61) scale(1.25)"><path d="M25 15H15V25M39 15H49V25M49 39V49H39M25 49H15V39" fill="none" stroke="#b4dbc4" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="32" r="6" fill="#b4dbc4"/></g><text x="178" y="114" fill="#b4dbc4" font-size="21" font-weight="700">@SWARMKIND / OPEN SOURCE</text>
+<text x="80" y="270" fill="#e4eee9" font-size="88" font-weight="700">X Focus Mode</text>
+<text x="84" y="338" fill="#e4eee9" font-size="38" font-weight="400">Your attention, your rules.</text>
+<text x="84" y="414" fill="#a8bcb8" font-size="25" font-weight="400">Personal filters for X. Instant Reveal. Optional community warnings.</text>
+<path d="M84 488H1116" stroke="#36504f"/>
+<text x="84" y="542" fill="#b4dbc4" font-size="24" font-weight="400">github.com/swarmkind/x-focus-mode</text>
+<text x="1116" y="542" text-anchor="end" fill="#a8bcb8" font-size="17" font-weight="400">DEVELOPER PREVIEW</text>
+</g></svg>

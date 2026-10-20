@@ -1,0 +1,204 @@
+{
+  "provenance": "Machine-authored synthetic examples; not independently human-labelled and not a representative X benchmark.",
+  "model": "Qwen3.5:latest",
+  "date": "2026-10-20T08:08:07.946Z",
+  "examples": 16,
+  "precision": 0.42857142857142855,
+  "recall": 0.75,
+  "abstention": 0.125,
+  "failures": 0,
+  "p50ms": 2175,
+  "p95ms": 2427,
+  "results": [
+    {
+      "id": "1",
+      "assessment": {
+        "id": "1",
+        "categories": [
+          "engagement_farming"
+        ],
+        "confidence": "high",
+        "relevant": false,
+        "needsContext": false
+      },
+      "ms": 1310
+    },
+    {
+      "id": "2",
+      "assessment": {
+        "id": "2",
+        "categories": [],
+        "confidence": "clear",
+        "relevant": false,
+        "needsContext": false
+      },
+      "ms": 1194
+    },
+    {
+      "id": "3",
+      "assessment": {
+        "id": "3",
+        "categories": [
+          "doomering"
+        ],
+        "confidence": "high",
+        "relevant": false,
+        "needsContext": false
+      },
+      "ms": 2168
+    },
+    {
+      "id": "4",
+      "assessment": {
+        "id": "4",
+        "categories": [],
+        "confidence": "clear",
+        "relevant": false,
+        "needsContext": false
+      },
+      "ms": 2072
+    },
+    {
+      "id": "5",
+      "assessment": {
+        "id": "5",
+        "categories": [],
+        "confidence": "clear",
+        "relevant": false,
+        "needsContext": false
+      },
+      "ms": 1946
+    },
+    {
+      "id": "6",
+      "assessment": {
+        "id": "6",
+        "categories": [],
+        "confidence": "uncertain",
+        "relevant": false,
+        "needsContext": true
+      },
+      "ms": 1939
+    },
+    {
+      "id": "7",
+      "assessment": {
+        "id": "7",
+        "categories": [],
+        "confidence": "clear",
+        "relevant": false,
+        "needsContext": false
+      },
+      "ms": 2010
+    },
+    {
+      "id": "8",
+      "assessment": {
+        "id": "8",
+        "categories": [
+          "engagement_farming"
+        ],
+        "confidence": "high",
+        "relevant": false,
+        "needsContext": false
+      },
+      "ms": 2175
+    },
+    {
+      "id": "9",
+      "assessment": {
+        "id": "9",
+        "categories": [
+          "suspected_ai_slop"
+        ],
+        "confidence": "high",
+        "relevant": false,
+        "needsContext": false
+      },
+      "ms": 2180
+    },
+    {
+      "id": "10",
+      "assessment": {
+        "id": "10",
+        "categories": [],
+        "confidence": "clear",
+        "relevant": false,
+        "needsContext": false
+      },
+      "ms": 2054
+    },
+    {
+      "id": "11",
+      "assessment": {
+        "id": "11",
+        "categories": [
+          "engagement_farming"
+        ],
+        "confidence": "high",
+        "relevant": false,
+        "needsContext": false
+      },
+      "ms": 2271
+    },
+    {
+      "id": "12",
+      "assessment": {
+        "id": "12",
+        "categories": [
+          "suspected_ai_slop"
+        ],
+        "confidence": "high",
+        "relevant": false,
+        "needsContext": false
+      },
+      "ms": 2427
+    },
+    {
+      "id": "13",
+      "assessment": {
+        "id": "13",
+        "categories": [
+          "doomering"
+        ],
+        "confidence": "high",
+        "relevant": false,
+        "needsContext": false
+      },
+      "ms": 2302
+    },
+    {
+      "id": "14",
+      "assessment": {
+        "id": "14",
+        "categories": [],
+        "confidence": "clear",
+        "relevant": false,
+        "needsContext": false
+      },
+      "ms": 2232
+    },
+    {
+      "id": "15",
+      "assessment": {
+        "id": "15",
+        "categories": [],
+        "confidence": "uncertain",
+        "relevant": false,
+        "needsContext": true
+      },
+      "ms": 2270
+    },
+    {
+      "id": "16",
+      "assessment": {
+        "id": "16",
+        "categories": [],
+        "confidence": "clear",
+        "relevant": false,
+        "needsContext": false
+      },
+      "ms": 2232
+    }
+  ]
+}

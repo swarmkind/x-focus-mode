@@ -8,7 +8,7 @@ Ollama is optional. The extension does not install native software or download w
 4. Endpoint: `http://localhost:11434/api/chat`. Enter the exact installed model name (`ollama list` shows it).
 5. Save settings and grant the extension loopback access. Accept the data-flow disclosure. Reload X.
 
-The client asks for JSON, a 4,096-token context and at most 700 generated tokens per batch. Model families differ in JSON reliability, latency and memory requirements. Unknown/malformed output fails open. A model-file download size is not its full runtime RAM use.
+The client disables optional thinking using Ollama’s `think: false` control and asks for JSON, a 4,096-token context and at most 700 generated tokens per batch. Model families differ in JSON reliability, latency and memory requirements. Unknown/malformed output fails open. A model-file download size is not its full runtime RAM use.
 
 ## If Ollama refuses the browser origin
 

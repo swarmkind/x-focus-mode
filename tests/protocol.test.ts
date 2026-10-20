@@ -10,6 +10,15 @@ import {
   RETENTION,
 } from "../shared/protocol.ts";
 import { parseAssessments, endpointURL } from "../shared/model.ts";
+import { publicVisibility } from "../extension/adapter.ts";
+test("unknown public visibility stays local while explicit restrictions remain excluded", () => {
+  for (const value of [undefined, null, "false", 0, {}])
+    assert.equal(publicVisibility(value, false), undefined);
+  assert.equal(publicVisibility(false, false), true);
+  assert.equal(publicVisibility(true, false), false);
+  assert.equal(publicVisibility(undefined, true), false);
+  assert.equal(publicVisibility(false, true), false);
+});
 const identity = await createIdentity();
 const now = Date.now();
 const report = await signReport(

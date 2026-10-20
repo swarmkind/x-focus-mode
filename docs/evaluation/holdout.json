@@ -1,0 +1,154 @@
+{
+  "provenance": "Machine-authored synthetic challenge cases created after prompt version 2 was frozen. Labels are subjective, not independently reviewed; this is a diagnostic holdout, not a representative X benchmark.",
+  "dataset": "tests/evaluation-holdout.json",
+  "model": "Qwen3.5:latest",
+  "date": "2026-10-20T08:41:12.531Z",
+  "examples": 12,
+  "precision": 1,
+  "recall": 0.75,
+  "abstention": 0.08333333333333333,
+  "requiredAbstentionRecall": 0.5,
+  "failures": 0,
+  "p50ms": 2231,
+  "p95ms": 4498,
+  "results": [
+    {
+      "id": "101",
+      "assessment": {
+        "id": "101",
+        "categories": [],
+        "confidence": "clear",
+        "relevant": false,
+        "needsContext": false
+      },
+      "ms": 4498
+    },
+    {
+      "id": "102",
+      "assessment": {
+        "id": "102",
+        "categories": [
+          "engagement_farming"
+        ],
+        "confidence": "high",
+        "relevant": false,
+        "needsContext": false
+      },
+      "ms": 1430
+    },
+    {
+      "id": "103",
+      "assessment": {
+        "id": "103",
+        "categories": [],
+        "confidence": "clear",
+        "relevant": false,
+        "needsContext": false
+      },
+      "ms": 2383
+    },
+    {
+      "id": "104",
+      "assessment": {
+        "id": "104",
+        "categories": [
+          "engagement_farming"
+        ],
+        "confidence": "high",
+        "relevant": false,
+        "needsContext": false
+      },
+      "ms": 2419
+    },
+    {
+      "id": "105",
+      "assessment": {
+        "id": "105",
+        "categories": [
+          "doomering"
+        ],
+        "confidence": "high",
+        "relevant": false,
+        "needsContext": false
+      },
+      "ms": 2333
+    },
+    {
+      "id": "106",
+      "assessment": {
+        "id": "106",
+        "categories": [],
+        "confidence": "clear",
+        "relevant": false,
+        "needsContext": false
+      },
+      "ms": 2263
+    },
+    {
+      "id": "107",
+      "assessment": {
+        "id": "107",
+        "categories": [],
+        "confidence": "clear",
+        "relevant": false,
+        "needsContext": false
+      },
+      "ms": 2153
+    },
+    {
+      "id": "108",
+      "assessment": {
+        "id": "108",
+        "categories": [],
+        "confidence": "clear",
+        "relevant": false,
+        "needsContext": false
+      },
+      "ms": 2178
+    },
+    {
+      "id": "109",
+      "assessment": {
+        "id": "109",
+        "categories": [],
+        "confidence": "clear",
+        "relevant": false,
+        "needsContext": false
+      },
+      "ms": 2201
+    },
+    {
+      "id": "110",
+      "assessment": {
+        "id": "110",
+        "categories": [],
+        "confidence": "clear",
+        "relevant": false,
+        "needsContext": false
+      },
+      "ms": 2189
+    },
+    {
+      "id": "111",
+      "assessment": {
+        "id": "111",
+        "categories": [],
+        "confidence": "clear",
+        "relevant": false,
+        "needsContext": false
+      },
+      "ms": 2231
+    },
+    {
+      "id": "112",
+      "assessment": {
+        "id": "112",
+        "categories": [],
+        "confidence": "uncertain",
+        "relevant": false,
+        "needsContext": true
+      },
+      "ms": 2220
+    }
+  ]
+}

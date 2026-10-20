@@ -23,7 +23,7 @@ function modeChanged(changeEndpoint = false) {
   const mode = $<HTMLSelectElement>("mode").value;
   $("provider-fields").hidden = mode === "community";
   $("local-help").hidden = mode !== "ollama";
-  $("oauth").hidden = mode !== "api";
+  $("oauth-row").hidden = mode !== "api";
   $("provider").required = mode !== "community";
   if (changeEndpoint)
     $("provider").value =
